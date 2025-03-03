@@ -52,6 +52,11 @@ public class Login extends AppCompatActivity {
         startActivity(si);
     }
 
+    public void go2(View view){
+        Intent si = new Intent(this, forgotPass.class);
+        startActivity(si);
+    }
+
     private void loginUser(){
         String email = email_login.getText().toString().trim();
         String password = password_login.getText().toString().trim();
