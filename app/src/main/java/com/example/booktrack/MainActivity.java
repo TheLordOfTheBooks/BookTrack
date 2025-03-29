@@ -1,6 +1,8 @@
 package com.example.booktrack;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +25,16 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    }
+
+    public void go(View view){
+        Intent si = new Intent(this, AddMyBook.class);
+        startActivity(si);
+    }
+
+    public void go2(View view){
+        Intent si = new Intent(this, BookList.class);
+        startActivity(si);
     }
 
 

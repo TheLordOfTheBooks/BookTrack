@@ -1,0 +1,62 @@
+package com.example.booktrack;
+
+public class Book {
+    private String name;
+    private String author;
+    private String genre;
+    private String situation;
+    private int pageCount;
+    private String imageUrl;
+
+    public Book() {
+        // Firestore needs a public no-argument constructor
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public String getSituation() {
+        return situation;
+    }
+
+    public int getPageCount() {
+        return pageCount;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public void setSituation(String situation) {
+        this.situation = situation;
+    }
+
+    public void setPageCount(int pageCount) {
+        this.pageCount = pageCount;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+}

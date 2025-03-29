@@ -7,6 +7,7 @@ import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +17,12 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.firestore.FieldValue;
+
+import java.util.Map;
+import java.util.HashMap;
 
 public class Signup extends AppCompatActivity {
     private EditText email_signup, password_signup;
@@ -57,6 +64,37 @@ public class Signup extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         FirebaseUser user = FBAuth.getCurrentUser();
                         Toast.makeText(Signup.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
+
+                        // ✅ FIRESTORE BOOK CREATION START
+                        String uid = user.getUid();
+                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                        // Create a user document (optional)
+                        Map<String, Object> userData = new HashMap<>();
+                        userData.put("createdAt", FieldValue.serverTimestamp());
+                        db.collection("users")
+                                .document(uid)
+                                .set(userData, SetOptions.merge());
+
+                        // Add a default book
+                        Map<String, Object> defaultBook = new HashMap<>();
+                        defaultBook.put("name", "Welcome to BookTrack");
+                        defaultBook.put("author", "BookTrack AI");
+                        defaultBook.put("genre", "Getting Started");
+                        defaultBook.put("situation", "To Read");
+                        defaultBook.put("page count", 1);
+                        defaultBook.put("imageUrl", "https://m.media-amazon.com/images/I/616bdy4E+VL._SY522_.jpg");
+
+
+                        db.collection("users")
+                                .document(uid)
+                                .collection("books")
+                                .add(defaultBook)
+                                .addOnSuccessListener(docRef -> Log.d("Firestore", "Default book added"))
+                                .addOnFailureListener(e -> Log.e("Firestore", "Failed to add book", e));
+                        // ✅ FIRESTORE BOOK CREATION END
+
+
                         finish();
                     } else {
                         Toast.makeText(Signup.this, "Registration Failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();

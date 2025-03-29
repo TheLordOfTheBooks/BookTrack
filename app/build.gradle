@@ -1,7 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
 
-    id 'com.google.gms.google-services'
+
+            id 'com.google.gms.google-services'
 }
 
 android {
@@ -40,10 +41,18 @@ dependencies {
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
+    // Firebase Firestore
+    implementation 'com.google.firebase:firebase-firestore:24.4.4'
+    // Firebase Storage
+    implementation 'com.google.firebase:firebase-storage:20.3.0'
     implementation 'com.google.firebase:firebase-auth:23.1.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.android.volley:volley:1.2.1'
+    // Glide (for image loading)
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.16.0'
 
     implementation platform('com.google.firebase:firebase-bom:33.6.0')
     implementation 'com.google.firebase:firebase-analytics'
 }
+apply plugin: 'com.google.gms.google-services'

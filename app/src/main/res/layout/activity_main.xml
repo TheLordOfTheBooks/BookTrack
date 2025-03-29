@@ -35,7 +35,8 @@
         android:text="book list"
         android:textSize="18sp"
         android:textColor="@android:color/white"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp"
+        android:onClick="go2"/>
 
     <!-- Book List Button -->
     <Button
@@ -55,7 +56,17 @@
         android:text="Search Books"
         android:textSize="18sp"
         android:textColor="@android:color/white"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp" />
+
+    <Button
+        android:id="@+id/add_my_book"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add My Book"
+        android:textSize="18sp"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="10dp"
+        android:onClick="go"/>
 
     <!-- Reading Progress Button -->
     <Button
