@@ -101,12 +101,25 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
             showBookDetailsDialog(book);
             return true;
         });
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, EditBook.class);
+            intent.putExtra("bookId", book.getDocId()); // assuming you store Firestore doc ID
+            intent.putExtra("name", book.getName());
+            intent.putExtra("author", book.getAuthor());
+            intent.putExtra("genre", book.getGenre());
+            intent.putExtra("situation", book.getSituation());
+            intent.putExtra("pageCount", book.getPageCount());
+            intent.putExtra("imageUrl", book.getImageUrl());
+            context.startActivity(intent);
+        });
     }
 
     @Override
     public int getItemCount() {
         return bookList.size();
     }
+
 
     static class BookViewHolder extends RecyclerView.ViewHolder {
         ImageView bookImage;
@@ -135,7 +148,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         TextView pageCountText = dialogView.findViewById(R.id.dialog_book_pagecount);
         Button closeBtn = dialogView.findViewById(R.id.dialog_close_button);
         Button deleteBtn = dialogView.findViewById(R.id.dialog_delete_button);
-        Button editBtn = dialogView.findViewById(R.id.dialog_edit_button);
 
         nameText.setText(book.getName());
         String author = book.getAuthor();
@@ -199,11 +211,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
                     .show();
         });
 
-        editBtn.setOnClickListener(v -> {
-            showEditBookDialog(book);
-            dialog.dismiss(); // Close view dialog before opening edit
 
-        });
 
 
         dialog.show();
@@ -212,176 +220,12 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     private Uri lastSelectedImageUri = null;
     public ImageView imagePreview = null;
 
-
-
-
-    private void showEditBookDialog(Book book) {
-        Log.d("DIALOG", "Dialog adapter instance: " + this.hashCode());
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        View editView = LayoutInflater.from(context).inflate(R.layout.dialog_edit_book, null);
-        builder.setView(editView);
-
-        EditText nameInput = editView.findViewById(R.id.edit_book_name);
-        EditText authorInput = editView.findViewById(R.id.edit_book_author);
-        EditText pageCountInput = editView.findViewById(R.id.edit_book_pagecount);
-        Spinner genreSpinner = editView.findViewById(R.id.edit_book_genre_spinner);
-        Spinner situationSpinner = editView.findViewById(R.id.edit_book_situation_spinner);
-        ImageView imageView = editView.findViewById(R.id.edit_book_image);
-        Button changeImageBtn = editView.findViewById(R.id.edit_choose_image_btn);
-        Button saveBtn = editView.findViewById(R.id.edit_save_button);
-        Button cancelBtn = editView.findViewById(R.id.edit_cancel_button);
-
-        this.imagePreview = imageView;
-        BookAdapter.this.imagePreview = imageView;
-
-        nameInput.setText(book.getName());
-        authorInput.setText(book.getAuthor());
-        pageCountInput.setText(String.valueOf(book.getPageCount()));
-
-        String[] genres = {"Fantasy", "Mystery", "Horror", "Romance", "Young Adult", "Others"};
-        String[] situations = {"Read", "Currently Reading", "Stopped Reading", "Want to Read"};
-
-        ArrayAdapter<String> genreAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, genres);
-        ArrayAdapter<String> situationAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, situations);
-        genreSpinner.setAdapter(genreAdapter);
-        situationSpinner.setAdapter(situationAdapter);
-
-        genreSpinner.setSelection(Arrays.asList(genres).indexOf(book.getGenre()));
-        situationSpinner.setSelection(Arrays.asList(situations).indexOf(book.getSituation()));
-
-        if (lastSelectedImageUri != null) {
-            Glide.with(context).load(lastSelectedImageUri).into(imageView);
-        } else if (book.getImageUrl() != null && !book.getImageUrl().isEmpty()) {
-            Glide.with(context).load(book.getImageUrl()).into(imageView);
-        }
-
-        changeImageBtn.setOnClickListener(v -> {
-            String[] options = {"Choose from Gallery", "Take a Photo"};
-
-            AlertDialog.Builder chooserBuilder = new AlertDialog.Builder(context);
-            chooserBuilder.setTitle("Select Book Cover");
-            chooserBuilder.setItems(options, (dialog, which) -> {
-                if (which == 0) {
-                    Intent pickIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    pickIntent.setType("image/*");
-                    imagePreview = imageView;
-                    BookAdapter.this.imagePreview = imageView;
-
-                } else if (which == 1) {
-                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        if (context.checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CAMERA}, 3001);
-                            return;
-                        }
-                    }
-                    if (takePictureIntent.resolveActivity(context.getPackageManager()) != null) {
-                        imagePreview = imageView;
-                        ((Activity) context).startActivityForResult(takePictureIntent, 2002);
-                    }
-                }
-            });
-            chooserBuilder.show();
-        });
-
-
-        AlertDialog editDialog = builder.create();
-
-        cancelBtn.setOnClickListener(v -> editDialog.dismiss());
-
-        saveBtn.setOnClickListener(v -> {
-            new AlertDialog.Builder(context)
-                    .setTitle("Confirm Save")
-                    .setMessage("Are you sure you want to save changes?")
-                    .setPositiveButton("Yes", (dialogInterface, i) -> {
-                        String newName = nameInput.getText().toString().trim();
-                        String newAuthor = authorInput.getText().toString().trim();
-                        String newGenre = genreSpinner.getSelectedItem().toString();
-                        String newSituation = situationSpinner.getSelectedItem().toString();
-                        int newPageCount = Integer.parseInt(pageCountInput.getText().toString().trim());
-
-                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                        if (user == null) return;
-
-                        FirebaseFirestore db = FirebaseFirestore.getInstance();
-                        db.collection("users")
-                                .document(user.getUid())
-                                .collection("books")
-                                .whereEqualTo("name", book.getName())
-                                .whereEqualTo("author", book.getAuthor())
-                                .get()
-                                .addOnSuccessListener(querySnapshot -> {
-                                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
-                                        if (lastSelectedImageUri != null) {
-                                            Log.d("IMAGE_UPLOAD", "Preparing to upload image: " + lastSelectedImageUri);
-
-                                            FirebaseStorage storage = FirebaseStorage.getInstance();
-                                            StorageReference ref = storage.getReference().child("book_images/" + UUID.randomUUID());
-
-                                            ref.putFile(lastSelectedImageUri)
-                                                    .addOnSuccessListener(taskSnapshot ->
-                                                            ref.getDownloadUrl().addOnSuccessListener(uri -> {
-                                                                String newImageUrl = uri.toString();
-                                                                Log.d("IMAGE_UPLOAD", "Upload successful. URL: " + newImageUrl);
-                                                                saveBookToFirestore(doc, book, newName, newAuthor, newGenre, newSituation, newPageCount, newImageUrl);
-                                                                editDialog.dismiss();
-                                                            })
-                                                    ).addOnFailureListener(e -> {
-                                                        Log.e("IMAGE_UPLOAD", "Upload failed", e);
-                                                        Toast.makeText(context, "Image upload failed", Toast.LENGTH_SHORT).show();
-                                                    });
-                                        } else {
-                                            Log.d("IMAGE_UPLOAD", "No image selected. Using previous image URL.");
-                                            saveBookToFirestore(doc, book, newName, newAuthor, newGenre, newSituation, newPageCount, book.getImageUrl());
-                                            editDialog.dismiss();
-                                        }
-                                    }
-                                });
-                    })
-                    .setNegativeButton("No", null)
-                    .show();
-        });
-
-        editDialog.show();
-    }
-
-
-
-    private void saveBookToFirestore(DocumentSnapshot doc, Book book, String name, String author,
-                                     String genre, String situation, int pageCount, String imageUrl) {
-
-        doc.getReference().update(
-                "name", name,
-                "author", author,
-                "genre", genre,
-                "situation", situation,
-                "pageCount", pageCount,
-                "imageUrl", imageUrl
-        ).addOnSuccessListener(unused -> {
-            Toast.makeText(context, "Book updated", Toast.LENGTH_SHORT).show();
-
-            book.setName(name);
-            book.setAuthor(author);
-            book.setGenre(genre);
-            book.setSituation(situation);
-            book.setPageCount(pageCount);
-            book.setImageUrl(imageUrl);
-
-            notifyDataSetChanged();
-        });
-    }
-
     public void setSelectedImageUri(Uri uri) {
         Log.d("IMAGE_URI", "Image URI set: " + uri);
         this.lastSelectedImageUri = uri;
         if (imagePreview != null && uri != null) {
             Glide.with(context).load(uri).into(imagePreview);
         }
-    }
-
-    public interface ImagePickerCallback {
-        void onRequestGallery();
-        void onRequestCamera();
     }
 
 

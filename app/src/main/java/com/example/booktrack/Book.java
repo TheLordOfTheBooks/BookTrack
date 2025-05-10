@@ -7,6 +7,7 @@ public class Book {
     private String situation;
     private int pageCount;
     private String imageUrl;
+    private String docId;
 
     public Book() {
         // Firestore needs a public no-argument constructor
@@ -36,6 +37,11 @@ public class Book {
         return imageUrl;
     }
 
+    public String getDocId() {
+        return docId;
+    }
+
+
     public void setName(String name) {
         this.name = name;
     }
@@ -59,4 +65,9 @@ public class Book {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
+    public void setDocId(String docId) {
+        this.docId = docId;
+    }
+
 }

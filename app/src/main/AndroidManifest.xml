@@ -24,6 +24,12 @@
         android:theme="@style/Theme.BookTrack"
         tools:targetApi="31">
         <activity
+            android:name=".EditBook"
+            android:exported="false" />
+        <activity
+            android:name=".UpdateBook"
+            android:exported="false" />
+        <activity
             android:name=".BookListFragment"
             android:exported="false" />
         <activity

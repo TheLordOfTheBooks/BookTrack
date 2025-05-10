@@ -144,22 +144,21 @@ public class BookListFragment extends Fragment {
                 .whereEqualTo("situation", situation)
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
-                    bookList.clear();
-                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
-                        Book book = doc.toObject(Book.class);
-                        bookList.add(book);
+                    if (querySnapshot != null) {
+                        bookList.clear();
+                        for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                            Book book = doc.toObject(Book.class);
+                            if (book != null) {
+                                book.setDocId(doc.getId()); // save Firestore doc ID
+                                bookList.add(book);
+                            }
+                        }
+                        adapter.notifyDataSetChanged();
                     }
-                    adapter.notifyDataSetChanged();
                 });
     }
 
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-
-    }
 
 
 
