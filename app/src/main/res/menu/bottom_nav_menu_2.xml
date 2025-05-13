@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_alarm"
+        android:title="Alarms"
+        android:icon="?android:attr/actionModeFindDrawable"/>
+
+    <item
+        android:id="@+id/nav_goal"
+        android:title="Goals"
+        android:icon="@android:drawable/ic_menu_edit"/>
+
+    <item
+        android:id="@+id/nav_timer"
+        android:title="Timer"
+        android:icon="@android:drawable/ic_lock_idle_alarm"/>
+</menu>

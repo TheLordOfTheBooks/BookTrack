@@ -2,6 +2,7 @@ package com.example.booktrack;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -15,6 +16,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,7 +24,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class Login extends AppCompatActivity {
     private EditText email_login,password_login;
-    private Button login_btn;
+    private Button login_btn, signup_btn, forgotpass_btn;
+    private TextView login_text;
 
     private FirebaseAuth FBAuth;
 
@@ -44,6 +47,17 @@ public class Login extends AppCompatActivity {
         email_login = findViewById(R.id.email_login);
         password_login = findViewById(R.id.password_login);
         login_btn = findViewById(R.id.login_btn);
+        signup_btn= findViewById(R.id.signup_btn);
+        forgotpass_btn = findViewById(R.id.forgotpass_btn);
+        login_text = findViewById(R.id.login_text);
+        login_btn.setBackgroundColor(Color.parseColor("#FAF0E6"));
+        login_btn.setTextColor(Color.BLACK);
+        signup_btn.setBackgroundColor(Color.parseColor("#FAF0E6"));
+        signup_btn.setTextColor(Color.BLACK);
+        forgotpass_btn.setBackgroundColor(Color.parseColor("#FAF0E6"));
+        forgotpass_btn.setTextColor(Color.BLACK);
+        login_text.setTextColor(Color.parseColor("#d9b99b"));
+
         login_btn.setOnClickListener(v -> loginUser());
     }
 

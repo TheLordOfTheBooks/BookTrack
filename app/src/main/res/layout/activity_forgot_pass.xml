@@ -11,7 +11,7 @@
     tools:context=".forgotPass">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/Forgot_pass_textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -19,7 +19,6 @@
         android:textSize="25sp"
         android:textStyle="bold" />
 
-    <!-- עטיפת ה-EditText בתוך TextInputLayout -->
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

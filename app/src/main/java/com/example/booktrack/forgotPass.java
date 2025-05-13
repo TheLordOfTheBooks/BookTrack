@@ -1,5 +1,6 @@
 package com.example.booktrack;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -12,6 +13,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,6 +32,7 @@ public class forgotPass extends AppCompatActivity {
     private TextInputEditText emailForgotPass;
     private Button resetPasswordBtn;
     private FirebaseAuth FBAuth;
+    private TextView Forgot_pass_textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,11 @@ public class forgotPass extends AppCompatActivity {
         emailForgotPass = findViewById(R.id.email_forgot_pass);
         resetPasswordBtn = findViewById(R.id.change_pass_btn);
         FBAuth = FirebaseAuth.getInstance();
+
+        Forgot_pass_textView = findViewById(R.id.Forgot_pass_textView);
+        resetPasswordBtn.setBackgroundColor(Color.parseColor("#FAF0E6"));
+        resetPasswordBtn.setTextColor(Color.BLACK);
+        Forgot_pass_textView.setTextColor(Color.parseColor("#d9b99b"));
 
         resetPasswordBtn.setOnClickListener(new View.OnClickListener() {
             @Override

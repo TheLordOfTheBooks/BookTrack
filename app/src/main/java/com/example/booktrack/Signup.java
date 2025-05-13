@@ -1,11 +1,13 @@
 package com.example.booktrack;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.util.Log;
 
@@ -27,6 +29,7 @@ import java.util.HashMap;
 public class Signup extends AppCompatActivity {
     private EditText email_signup, password_signup;
     private Button signup_btn;
+    private TextView passMust, signUp_TextVeiw;
 
     private FirebaseAuth FBAuth;
 
@@ -46,6 +49,12 @@ public class Signup extends AppCompatActivity {
         signup_btn = findViewById(R.id.signup_btn);
         FBAuth = FirebaseAuth.getInstance();
         signup_btn.setOnClickListener(v -> registerUser());
+        passMust = findViewById(R.id.passMust);
+        signUp_TextVeiw = findViewById(R.id.signUp_TextVeiw);
+        passMust.setTextColor(Color.parseColor("#d9b99b"));
+        signup_btn.setBackgroundColor(Color.parseColor("#FAF0E6"));
+        signup_btn.setTextColor(Color.BLACK);
+        signUp_TextVeiw.setTextColor(Color.parseColor("#d9b99b"));
     }
     private void registerUser(){
         String email = email_signup.getText().toString().trim();

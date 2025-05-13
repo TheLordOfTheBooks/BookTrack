@@ -32,11 +32,12 @@
         android:id="@+id/add_book_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="book list"
+        android:text="Book List"
         android:textSize="18sp"
         android:textColor="@android:color/white"
         android:layout_marginBottom="10dp"
-        android:onClick="go2"/>
+        android:onClick="BookList"
+    />
 
     <!-- Book List Button -->
     <Button
@@ -46,46 +47,18 @@
         android:text="Time to read"
         android:textSize="18sp"
         android:textColor="@android:color/white"
-        android:layout_marginBottom="10dp"/>
-
-    <!-- Search Books Button -->
-    <Button
-        android:id="@+id/search_books_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Search Books"
-        android:textSize="18sp"
-        android:textColor="@android:color/white"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="10dp"
+        android:onClick="TimeToRead"/>
 
     <Button
-        android:id="@+id/add_my_book"
+        android:id="@+id/add_book"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add My Book"
+        android:text="Add Book"
         android:textSize="18sp"
         android:textColor="@android:color/white"
         android:layout_marginBottom="10dp"
-        android:onClick="go"/>
+        android:onClick="AddMyBook"/>
 
-    <!-- Reading Progress Button -->
-    <Button
-        android:id="@+id/reading_progress_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Reading Progress"
-        android:textSize="18sp"
-        android:textColor="@android:color/white"
-        android:layout_marginBottom="10dp"/>
-
-    <!-- Settings Button -->
-    <Button
-        android:id="@+id/settings_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Settings"
-        android:textSize="18sp"
-        android:textColor="@android:color/white"
-        android:layout_marginBottom="10dp"/>
 
 </LinearLayout>
