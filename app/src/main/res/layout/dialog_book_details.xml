@@ -2,8 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="#eed9c4">
+
+
 
     <ImageView
         android:id="@+id/dialog_book_image"
@@ -46,10 +50,12 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/dialog_close_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:backgroundTint="#FAF0E6"
+        android:textColor="@android:color/black"
         android:text="Close" />
 
     <LinearLayout
@@ -58,12 +64,14 @@
         android:orientation="horizontal"
         android:gravity="center">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/dialog_delete_button"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Delete" />
+            android:text="Delete"
+            app:backgroundTint="#FAF0E6"
+            android:textColor="@android:color/black"/>
     </LinearLayout>
 
 </LinearLayout>

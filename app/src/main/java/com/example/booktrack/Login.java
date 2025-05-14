@@ -26,6 +26,7 @@ public class Login extends AppCompatActivity {
     private EditText email_login,password_login;
     private Button login_btn, signup_btn, forgotpass_btn;
     private TextView login_text;
+    private View login_view;
 
     private FirebaseAuth FBAuth;
 
@@ -50,6 +51,9 @@ public class Login extends AppCompatActivity {
         signup_btn= findViewById(R.id.signup_btn);
         forgotpass_btn = findViewById(R.id.forgotpass_btn);
         login_text = findViewById(R.id.login_text);
+        login_view = findViewById(R.id.main);
+
+
         login_btn.setBackgroundColor(Color.parseColor("#FAF0E6"));
         login_btn.setTextColor(Color.BLACK);
         signup_btn.setBackgroundColor(Color.parseColor("#FAF0E6"));
@@ -57,6 +61,7 @@ public class Login extends AppCompatActivity {
         forgotpass_btn.setBackgroundColor(Color.parseColor("#FAF0E6"));
         forgotpass_btn.setTextColor(Color.BLACK);
         login_text.setTextColor(Color.parseColor("#d9b99b"));
+        login_view.setBackgroundColor(Color.parseColor("#eed9c4"));
 
         login_btn.setOnClickListener(v -> loginUser());
     }

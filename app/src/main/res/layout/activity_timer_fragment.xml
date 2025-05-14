@@ -69,19 +69,26 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/start_timer_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Start To Read" />
+            android:text="Start To Read"
+            android:layout_marginStart="16dp"
+            app:backgroundTint="#FAF0E6"
+            android:textColor="@android:color/black"/>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/cancel_timer_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Cancel"
-            android:layout_marginStart="16dp" />
+            android:layout_marginStart="16dp"
+            app:backgroundTint="#FAF0E6"
+            android:textColor="@android:color/black"/>
     </LinearLayout>
+
+
 
     <!-- Countdown Text -->
     <TextView

@@ -33,6 +33,7 @@ public class forgotPass extends AppCompatActivity {
     private Button resetPasswordBtn;
     private FirebaseAuth FBAuth;
     private TextView Forgot_pass_textView;
+    private View forgotPass_view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +48,15 @@ public class forgotPass extends AppCompatActivity {
 
         emailForgotPass = findViewById(R.id.email_forgot_pass);
         resetPasswordBtn = findViewById(R.id.change_pass_btn);
+        forgotPass_view = findViewById(R.id.main);
         FBAuth = FirebaseAuth.getInstance();
-
         Forgot_pass_textView = findViewById(R.id.Forgot_pass_textView);
+
+
         resetPasswordBtn.setBackgroundColor(Color.parseColor("#FAF0E6"));
         resetPasswordBtn.setTextColor(Color.BLACK);
         Forgot_pass_textView.setTextColor(Color.parseColor("#d9b99b"));
+        forgotPass_view.setBackgroundColor(Color.parseColor("#eed9c4"));
 
         resetPasswordBtn.setOnClickListener(new View.OnClickListener() {
             @Override

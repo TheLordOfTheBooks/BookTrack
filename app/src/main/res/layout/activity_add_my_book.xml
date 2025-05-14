@@ -14,20 +14,31 @@
         android:orientation="vertical"
         android:gravity="center_horizontal">
 
-        <EditText
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="* Book Name">
+
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/book_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="* Book Name"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:layout_marginTop="12dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/author_name"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Author Name"
-            android:inputType="textPersonName"
-            android:layout_marginTop="12dp" />
+            android:hint="Author Name">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/author_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:layout_marginTop="12dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <ImageView
             android:id="@+id/cover_preview"
@@ -48,23 +59,36 @@
             android:id="@+id/genre_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp" />
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:background="#f2e2ce"/>
 
-        <EditText
-            android:id="@+id/page_count"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="* Page Count"
-            android:inputType="number"
-            android:layout_marginTop="12dp" />
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxBackgroundMode="outline">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/page_count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:layout_marginTop="12dp"
+                android:maxLines="1"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Spinner
             android:id="@+id/state_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp" />
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:background="#f2e2ce"/>
 
         <TextView
+            android:id="@+id/required_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="* Fields marked with an asterisk are required"

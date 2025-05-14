@@ -1,6 +1,7 @@
 package com.example.booktrack;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -37,6 +38,7 @@ public class BookList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_list); // make sure this matches your layout file
+
 
 
         EdgeToEdge.enable(this);

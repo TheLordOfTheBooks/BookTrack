@@ -14,5 +14,5 @@
     <item
         android:id="@+id/nav_timer"
         android:title="Timer"
-        android:icon="@android:drawable/ic_lock_idle_alarm"/>
+        android:icon="@android:drawable/ic_lock_idle_alarm" />
 </menu>

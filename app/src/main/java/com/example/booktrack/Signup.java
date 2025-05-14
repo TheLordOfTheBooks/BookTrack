@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -30,6 +31,7 @@ public class Signup extends AppCompatActivity {
     private EditText email_signup, password_signup;
     private Button signup_btn;
     private TextView passMust, signUp_TextVeiw;
+    private View signup_view;
 
     private FirebaseAuth FBAuth;
 
@@ -51,10 +53,13 @@ public class Signup extends AppCompatActivity {
         signup_btn.setOnClickListener(v -> registerUser());
         passMust = findViewById(R.id.passMust);
         signUp_TextVeiw = findViewById(R.id.signUp_TextVeiw);
+        signup_view = findViewById(R.id.main);
+
         passMust.setTextColor(Color.parseColor("#d9b99b"));
         signup_btn.setBackgroundColor(Color.parseColor("#FAF0E6"));
         signup_btn.setTextColor(Color.BLACK);
         signUp_TextVeiw.setTextColor(Color.parseColor("#d9b99b"));
+        signup_view.setBackgroundColor(Color.parseColor("#eed9c4"));
     }
     private void registerUser(){
         String email = email_signup.getText().toString().trim();

@@ -1,5 +1,6 @@
 package com.example.booktrack;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -59,7 +60,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 public class BookListFragment extends Fragment {
-
 
 
     private static final String ARG_SITUATION = "situation";

@@ -11,6 +11,18 @@
     android:background="@android:color/white"
     tools:context=".MainActivity">
 
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/logoImageView"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_gravity="center"
+        android:src="@mipmap/ic_logo"
+        android:scaleType="centerCrop"
+        android:layout_marginBottom="30dp"
+        android:contentDescription="App logo"
+        app:shapeAppearanceOverlay="@style/CircleImage"/>
+
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar"

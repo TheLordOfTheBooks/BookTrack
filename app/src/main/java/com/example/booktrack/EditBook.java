@@ -1,5 +1,6 @@
 package com.example.booktrack;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.Manifest;
 import android.app.Activity;
@@ -49,6 +50,7 @@ public class EditBook extends AppCompatActivity {
     private ImageView coverImage;
     private Button saveButton;
     private Button changeImageButton;
+    private View editBook_view;
 
     private String bookId;
     private final String[] genres = {"Fantasy", "Mystery", "Horror", "Romance", "Young Adult", "Others"};
@@ -77,6 +79,7 @@ public class EditBook extends AppCompatActivity {
         genreSpinner = findViewById(R.id.edit_genre);
         stateSpinner = findViewById(R.id.edit_state);
         coverImage = findViewById(R.id.edit_cover);
+        editBook_view = findViewById(R.id.main);
         coverImage.setOnClickListener(v -> {
             Toast.makeText(this, "Image button clicked", Toast.LENGTH_SHORT).show();
             checkPermissions();
@@ -86,9 +89,32 @@ public class EditBook extends AppCompatActivity {
         changeImageButton = findViewById(R.id.change_image_button);
         changeImageButton.setOnClickListener(v -> checkPermissions());
 
+        changeImageButton.setBackgroundColor(Color.parseColor("#FAF0E6"));
+        changeImageButton.setTextColor(Color.BLACK);
+        saveButton.setBackgroundColor(Color.parseColor("#FAF0E6"));
+        saveButton.setTextColor(Color.BLACK);
+        editBook_view.setBackgroundColor(Color.parseColor("#eed9c4"));
+        coverImage.setBackgroundColor(Color.parseColor("#eed9c4"));
+
         genreSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genres));
         stateSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, states));
-        // Get intent data
+
+        ArrayAdapter<String> genreAdapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_spinner_dropdown_item,
+                genres
+        );
+        genreAdapter.setDropDownViewResource(R.layout.spinner_items);
+        genreSpinner.setAdapter(genreAdapter);
+
+        ArrayAdapter<String> stateAdapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_spinner_dropdown_item,
+                states
+        );
+        stateAdapter.setDropDownViewResource(R.layout.spinner_items);
+        stateSpinner.setAdapter(stateAdapter);
+
         Intent intent = getIntent();
         bookId = intent.getStringExtra("bookId");
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
