@@ -70,4 +70,9 @@ public class Book {
         this.docId = docId;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
 }

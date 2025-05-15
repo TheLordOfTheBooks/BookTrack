@@ -29,7 +29,7 @@ public class TimeToRead extends AppCompatActivity {
         navView.setOnItemSelectedListener(item -> {
             Fragment selectedFragment = null;
             if (item.getItemId() == R.id.nav_alarm) {
-                // selectedFragment = new AlarmFragment();
+                selectedFragment = new AlarmsFragment();
             } else if (item.getItemId() == R.id.nav_goal) {
                 /*selectedFragment = new GoalFragment();*/
             } else if (item.getItemId() == R.id.nav_timer) {

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateAlarm"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:id="@+id/create_alarm_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- 1. Pick Date & Time -->
+        <Button
+            android:id="@+id/pick_date_time_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pick Date and Time" />
+
+        <TextView
+            android:id="@+id/pick_book_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textSize="20dp"
+            android:text="pick a book:"/>
+
+        <Spinner
+            android:id="@+id/book_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="16dp"
+            android:background="#f2e2ce"/>
+
+        <!-- 2. Show chosen Date & Time -->
+        <TextView
+            android:id="@+id/selected_date_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No date/time selected"
+            android:textSize="16sp"
+            android:layout_marginTop="12dp" />
+
+        <!-- 3. Choose Purpose -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Why this alarm?"
+            android:textSize="16sp"
+            android:layout_marginTop="16dp" />
+
+        <RadioGroup
+            android:id="@+id/purpose_radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/finish_book_radio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Finish book until that date" />
+
+            <RadioButton
+                android:id="@+id/other_radio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Other" />
+        </RadioGroup>
+
+        <!-- Message if 'Other' is selected -->
+        <EditText
+            android:id="@+id/other_message_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Write your message here"
+            android:visibility="gone"
+            android:inputType="text"
+            android:layout_marginTop="8dp" />
+
+        <!-- 4. Ask if user wants to add goal -->
+        <CheckBox
+            android:id="@+id/add_goal_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add a reading goal?"
+            android:layout_marginTop="16dp"/>
+
+        <!-- Final Add Alarm Button -->
+        <Button
+            android:id="@+id/add_alarm_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add Alarm"
+            android:layout_marginTop="24dp" />
+    </LinearLayout>
+
+</ScrollView>
