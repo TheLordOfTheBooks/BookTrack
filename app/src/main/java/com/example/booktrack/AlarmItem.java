@@ -5,18 +5,18 @@ public class AlarmItem {
     private String bookId;
     private String bookName;
     private String bookImageUrl;
-    private long triggerMillis;
+    private long deadlineMillis;
     private String message;
 
     // Required empty constructor for Firestore or Room
     public AlarmItem() {}
 
-    public AlarmItem(String alarmId, String bookId, String bookName, String bookImageUrl, long triggerMillis, String message) {
+    public AlarmItem(String alarmId, String bookId, String bookName, String bookImageUrl, long deadlineMillis, String message) {
         this.alarmId = alarmId;
         this.bookId = bookId;
         this.bookName = bookName;
         this.bookImageUrl = bookImageUrl;
-        this.triggerMillis = triggerMillis;
+        this.deadlineMillis = deadlineMillis;
         this.message = message;
     }
 
@@ -32,8 +32,8 @@ public class AlarmItem {
     public String getBookImageUrl() { return bookImageUrl; }
     public void setBookImageUrl(String bookImageUrl) { this.bookImageUrl = bookImageUrl; }
 
-    public long getTriggerMillis() { return triggerMillis; }
-    public void setTriggerMillis(long triggerMillis) { this.triggerMillis = triggerMillis; }
+    public long getDeadlineMillis() { return deadlineMillis; }
+    public void setDeadlineMillis(long deadlineMillis) { this.deadlineMillis = deadlineMillis; }
 
     public String getMessage() { return message; }
     public void setMessage(String message) { this.message = message; }

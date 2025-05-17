@@ -43,7 +43,7 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmViewH
 
         holder.bookTitle.setText(alarm.getBookName());
 
-        Date date = new Date(alarm.getTriggerMillis());
+        Date date = new Date(alarm.getDeadlineMillis());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
 

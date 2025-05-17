@@ -50,7 +50,7 @@ public class BootReceiver extends BroadcastReceiver {
 
                     for (QueryDocumentSnapshot doc : querySnapshot) {
                         AlarmItem alarm = doc.toObject(AlarmItem.class);
-                        long millis = alarm.getTriggerMillis();
+                        long millis = alarm.getDeadlineMillis();
 
                         if (millis < System.currentTimeMillis()) {
                             doc.getReference().delete();

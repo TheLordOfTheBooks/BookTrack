@@ -140,7 +140,7 @@ public class CreateGoal extends AppCompatActivity {
 
         Map<String, Object> goal = new HashMap<>();
         goal.put("description", description);
-        goal.put("triggerMillis", deadlineMillis);
+        goal.put("deadlineMillis", deadlineMillis);
         goal.put("changeState", changeState);
         goal.put("newState", changeState ? newState : null);
         goal.put("bookId", bookId);

@@ -10,7 +10,7 @@ public class Book {
     private String docId;
 
     public Book() {
-        // Firestore needs a public no-argument constructor
+
     }
 
     public String getName() {

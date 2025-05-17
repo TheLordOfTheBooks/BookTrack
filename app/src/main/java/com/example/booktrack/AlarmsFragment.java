@@ -106,10 +106,10 @@ public class AlarmsFragment extends Fragment {
             startActivity(intent);
         });
 
-        addAlarmButton.setBackgroundColor(Color.parseColor("#FAF0E6")); // Light cream buttons
+        addAlarmButton.setBackgroundColor(Color.parseColor("#FAF0E6"));
         addAlarmButton.setTextColor(Color.BLACK);
 
-        loadAlarmsFromDatabase(); // You’ll implement this to read from Firestore/Room
+        loadAlarmsFromDatabase();
     }
 
 
@@ -134,7 +134,7 @@ public class AlarmsFragment extends Fragment {
                             alarmList.add(alarm);
                         }
 
-                        alarmList.sort((a1, a2) -> Long.compare(a1.getTriggerMillis(), a2.getTriggerMillis()));
+                        alarmList.sort((a1, a2) -> Long.compare(a1.getDeadlineMillis(), a2.getDeadlineMillis()));
                         alarmsAdapter.notifyDataSetChanged();
                     }
                 });
@@ -160,7 +160,7 @@ public class AlarmsFragment extends Fragment {
                     long now = System.currentTimeMillis();
                     for (QueryDocumentSnapshot doc : querySnapshot) {
                         AlarmItem alarm = doc.toObject(AlarmItem.class);
-                        if (alarm.getTriggerMillis() < now) {
+                        if (alarm.getDeadlineMillis() < now) {
                             doc.getReference().delete()
                                     .addOnSuccessListener(aVoid ->
                                             Log.d("AlarmsFragment", "Deleted expired alarm: " + alarm.getAlarmId()))
@@ -190,7 +190,7 @@ public class AlarmsFragment extends Fragment {
         msg.setText("Message: " + alarm.getMessage());
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
-        datetime.setText("When: " + sdf.format(new Date(alarm.getTriggerMillis())));
+        datetime.setText("When: " + sdf.format(new Date(alarm.getDeadlineMillis())));
 
         Glide.with(requireContext())
                 .load(alarm.getBookImageUrl())
@@ -204,12 +204,12 @@ public class AlarmsFragment extends Fragment {
             AlarmManager alarmManager = (AlarmManager) requireContext().getSystemService(Context.ALARM_SERVICE);
 
             Intent intent = new Intent(requireContext(), AlarmReceiver.class);
-            intent.putExtra("alarm_id", alarm.getAlarmId()); // Same ID used when scheduling
+            intent.putExtra("alarm_id", alarm.getAlarmId());
             intent.putExtra("alarm_message", alarm.getBookName() + ": " + alarm.getMessage());
 
             PendingIntent pendingIntent = PendingIntent.getBroadcast(
                     requireContext(),
-                    (int) alarm.getTriggerMillis(), // Must match the one used when scheduled
+                    (int) alarm.getDeadlineMillis(),
                     intent,
                     PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
             );

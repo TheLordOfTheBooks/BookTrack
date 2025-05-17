@@ -10,7 +10,7 @@ public class GoalItem {
     private String bookName;
     private String id;
 
-    public GoalItem() {}  // Required for Firestore
+    public GoalItem() {}
 
     public GoalItem(String description, long deadlineMillis, boolean changeState, String newState) {
         this.description = description;

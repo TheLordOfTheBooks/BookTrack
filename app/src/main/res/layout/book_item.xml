@@ -13,35 +13,35 @@
         android:paddingStart="8dp"
         android:background="#c3b091">
 
-    <ImageView
-        android:id="@+id/book_image"
-        android:layout_width="80dp"
-        android:layout_height="110dp"
-        android:scaleType="centerCrop"
-        android:src="#c3b091"/>
+        <ImageView
+            android:id="@+id/book_image"
+            android:layout_width="80dp"
+            android:layout_height="110dp"
+            android:scaleType="centerCrop"
+            android:src="#c3b091"/>
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="8dp">
-
-        <TextView
-            android:id="@+id/book_name"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Book Title"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:paddingStart="8dp">
 
-        <TextView
-            android:id="@+id/book_author"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Author Name"
-            android:textSize="14sp"
-            android:textColor="#555" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/book_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Book Title"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/book_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Author Name"
+                android:textSize="14sp"
+                android:textColor="#555" />
+        </LinearLayout>
 
     </LinearLayout>
 

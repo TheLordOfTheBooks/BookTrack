@@ -17,7 +17,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button AddBook_btn, BookList_btn, TimeToRead_btn;
+    private Button BookList_btn, TimeToRead_btn;
     private View main_view;
     FloatingActionButton fab;
 

@@ -19,12 +19,12 @@
             android:layout_height="wrap_content"
             android:hint="* Book Name">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/book_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:layout_marginTop="12dp"/>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/book_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:layout_marginTop="12dp"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout

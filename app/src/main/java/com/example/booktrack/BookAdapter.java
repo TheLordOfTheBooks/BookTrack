@@ -179,7 +179,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
                         FirebaseFirestore db = FirebaseFirestore.getInstance();
                         FirebaseStorage storage = FirebaseStorage.getInstance();
 
-                        // Step 1: Delete Firestore book
                         db.collection("users")
                                 .document(user.getUid())
                                 .collection("books")
@@ -188,11 +187,10 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
                                 .get()
                                 .addOnSuccessListener(querySnapshot -> {
                                     for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
-                                        doc.getReference().delete(); // delete doc
-                                        bookList.remove(book); // remove from local list
-                                        notifyDataSetChanged(); // refresh UI
+                                        doc.getReference().delete();
+                                        bookList.remove(book);
+                                        notifyDataSetChanged();
 
-                                        // Step 2: Delete from Storage if image exists
                                         if (book.getImageUrl() != null && !book.getImageUrl().isEmpty()) {
                                             StorageReference photoRef = storage.getReferenceFromUrl(book.getImageUrl());
                                             photoRef.delete()
@@ -205,7 +203,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
                                 })
                                 .addOnFailureListener(e -> Toast.makeText(context, "Failed to delete book", Toast.LENGTH_SHORT).show());
 
-                        dialog.dismiss(); // close book dialog
+                        dialog.dismiss();
                     })
                     .setNegativeButton("No", null)
                     .show();

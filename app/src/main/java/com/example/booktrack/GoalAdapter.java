@@ -47,12 +47,12 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.GoalViewHolder
     @Override
     public void onBindViewHolder(@NonNull GoalViewHolder holder, int position) {
         GoalItem goal = goalList.get(position);
-        long deadline = goal.getDeadlineMillis();
+        long deadlineMillis = goal.getDeadlineMillis();
         long now = System.currentTimeMillis();
         holder.deleteButton.setOnClickListener(v -> deleteGoal(goal));
 
         // Deadline warning
-        if (deadline < now) {
+        if (deadlineMillis < now) {
             holder.deadlineWarning.setVisibility(View.VISIBLE);
         } else {
             holder.deadlineWarning.setVisibility(View.GONE);
@@ -61,14 +61,12 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.GoalViewHolder
 
 
 
-
-        // Set goal text
+        
         holder.description.setText("Goal: " + goal.getDescription());
 
-        // Deadline format
         String dateStr = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
-                .format(new Date(deadline));
-        holder.deadline.setText("Deadline: " + dateStr);
+                .format(new Date(deadlineMillis));
+        holder.deadlineMillis.setText("Deadline: " + dateStr);
 
         // Book state info
         if (goal.isChangeState()) {
@@ -141,7 +139,7 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.GoalViewHolder
     }
 
     public static class GoalViewHolder extends RecyclerView.ViewHolder {
-        TextView description, deadline, stateChange, deadlineWarning, bookTitle;
+        TextView description, deadlineMillis, stateChange, deadlineWarning, bookTitle;
         ImageView bookCover;
         Button doneButton, failedButton, deleteButton;
 
@@ -149,7 +147,7 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.GoalViewHolder
             super(itemView);
             bookTitle = itemView.findViewById(R.id.book_name_text);
             description = itemView.findViewById(R.id.goal_description);
-            deadline = itemView.findViewById(R.id.goal_deadline);
+            deadlineMillis = itemView.findViewById(R.id.goal_deadline);
             stateChange = itemView.findViewById(R.id.goal_state_change);
             deadlineWarning = itemView.findViewById(R.id.deadline_passed_warning);
             bookCover = itemView.findViewById(R.id.book_cover);

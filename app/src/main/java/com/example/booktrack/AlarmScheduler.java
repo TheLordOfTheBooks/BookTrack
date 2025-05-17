@@ -9,12 +9,12 @@ import android.util.Log;
 
 public class AlarmScheduler {
     public static void schedule(Context context, AlarmItem alarm) {
-        if (alarm == null || alarm.getTriggerMillis() < System.currentTimeMillis()) {
+        if (alarm == null || alarm.getDeadlineMillis() < System.currentTimeMillis()) {
             Log.w("AlarmScheduler", "Skipping expired or null alarm");
             return;
         }
 
-        Log.d("AlarmScheduler", "\u23f0 Scheduling alarm for: " + alarm.getTriggerMillis());
+        Log.d("AlarmScheduler", "\u23f0 Scheduling alarm for: " + alarm.getDeadlineMillis());
         Log.d("AlarmScheduler", "\ud83d\udcc6 Current time: " + System.currentTimeMillis());
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -41,11 +41,11 @@ public class AlarmScheduler {
 
         alarmManager.setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
-                alarm.getTriggerMillis(),
+                alarm.getDeadlineMillis(),
                 pendingIntent
         );
 
-        Log.i("AlarmScheduler", "Alarm scheduled for: " + alarm.getTriggerMillis());
+        Log.i("AlarmScheduler", "Alarm scheduled for: " + alarm.getDeadlineMillis());
     }
 
     public static void cancel(Context context, AlarmItem alarm) {

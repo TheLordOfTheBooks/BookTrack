@@ -207,7 +207,7 @@ public class TimerFragment extends Fragment {
                     if (snapshot != null) {
                         for (QueryDocumentSnapshot doc : snapshot) {
                             AlarmItem alarm = doc.toObject(AlarmItem.class);
-                            if (alarm.getTriggerMillis() < System.currentTimeMillis()) {
+                            if (alarm.getDeadlineMillis() < System.currentTimeMillis()) {
                                 doc.getReference().delete()
                                         .addOnSuccessListener(aVoid ->
                                                 Log.d("TimerFragment", "Deleted expired alarm: " + alarm.getAlarmId()))
@@ -220,7 +220,7 @@ public class TimerFragment extends Fragment {
     }
 
     private void scheduleTimerAlarm(long durationMillis) {
-        long triggerAtMillis = System.currentTimeMillis() + durationMillis;
+        long deadlineMillis = System.currentTimeMillis() + durationMillis;
 
         Intent intent = new Intent(requireContext(), TimerReceiver.class);
         intent.setAction("TIMER_ALARM");
@@ -243,9 +243,9 @@ public class TimerFragment extends Fragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent);
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, deadlineMillis, pendingIntent);
         } else {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent);
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, deadlineMillis, pendingIntent);
         }
     }
 

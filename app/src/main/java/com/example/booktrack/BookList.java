@@ -44,10 +44,10 @@ public class BookList extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_book_list);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-                    Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-                    v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-                    return insets;
-                });
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
         if (savedInstanceState == null) {
             getSupportFragmentManager()
@@ -56,33 +56,33 @@ public class BookList extends AppCompatActivity {
                     .commit();
         }
 
-            BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-            bottomNav.setOnItemSelectedListener(item -> {
-                Fragment selectedFragment = null;
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
 
-                int id = item.getItemId();
+            int id = item.getItemId();
 
-                if (id == R.id.nav_read) {
-                    selectedFragment = BookListFragment.newInstance("Read");
-                } else if (id == R.id.nav_current) {
-                    selectedFragment = BookListFragment.newInstance("Currently Reading");
-                } else if (id == R.id.nav_stopped) {
-                    selectedFragment = BookListFragment.newInstance("Stopped Reading");
-                } else if (id == R.id.nav_want) {
-                    selectedFragment = BookListFragment.newInstance("Want to Read");
-                }
+            if (id == R.id.nav_read) {
+                selectedFragment = BookListFragment.newInstance("Read");
+            } else if (id == R.id.nav_current) {
+                selectedFragment = BookListFragment.newInstance("Currently Reading");
+            } else if (id == R.id.nav_stopped) {
+                selectedFragment = BookListFragment.newInstance("Stopped Reading");
+            } else if (id == R.id.nav_want) {
+                selectedFragment = BookListFragment.newInstance("Want to Read");
+            }
 
-                if (selectedFragment != null) {
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.fragment_container, selectedFragment)
-                            .commit();
-                }
+            if (selectedFragment != null) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, selectedFragment)
+                        .commit();
+            }
 
-                return true;
-            });
+            return true;
+        });
 
-            // Load default fragment
-            bottomNav.setSelectedItemId(R.id.nav_read);
+        // Load default fragment
+        bottomNav.setSelectedItemId(R.id.nav_read);
     }
 
 

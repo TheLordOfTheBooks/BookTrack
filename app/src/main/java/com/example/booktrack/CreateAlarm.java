@@ -164,8 +164,8 @@ public class CreateAlarm extends AppCompatActivity {
             return;
         }
 
-        long triggerMillis = selectedCalendar.getTimeInMillis();
-        if (triggerMillis < System.currentTimeMillis()) {
+        long deadlineMillis = selectedCalendar.getTimeInMillis();
+        if (deadlineMillis < System.currentTimeMillis()) {
             Toast.makeText(this, "Please select a future time", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -194,7 +194,7 @@ public class CreateAlarm extends AppCompatActivity {
         String uid = user.getUid();
         String alarmId = UUID.randomUUID().toString();
         AlarmItem alarm = new AlarmItem(alarmId, selectedBook.getDocId(), selectedBook.getName(),
-                selectedBook.getImageUrl(), triggerMillis, purpose);
+                selectedBook.getImageUrl(), deadlineMillis, purpose);
 
         FirebaseFirestore.getInstance()
                 .collection("users")
@@ -204,7 +204,7 @@ public class CreateAlarm extends AppCompatActivity {
                 .set(alarm)
                 .addOnSuccessListener(unused -> {
                     Toast.makeText(this, "Alarm saved", Toast.LENGTH_SHORT).show();
-                    handlePostSave(selectedBook, triggerMillis, alarmId, purpose);
+                    handlePostSave(selectedBook, deadlineMillis, alarmId, purpose);
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(this, "Failed to save alarm", Toast.LENGTH_SHORT).show();
@@ -212,11 +212,11 @@ public class CreateAlarm extends AppCompatActivity {
                 });
     }
 
-    private void handlePostSave(Book book, long triggerMillis, String alarmId, String message) {
+    private void handlePostSave(Book book, long deadlineMillis, String alarmId, String message) {
         pendingBookName = book.getName();
         pendingMessage = message;
         pendingAlarmId = alarmId;
-        pendingTriggerMillis = triggerMillis;
+        pendingTriggerMillis = deadlineMillis;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
                 ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
@@ -227,12 +227,12 @@ public class CreateAlarm extends AppCompatActivity {
         }
 
         AlarmScheduler.schedule(this, new AlarmItem(alarmId, book.getDocId(), book.getName(),
-                book.getImageUrl(), triggerMillis, message));
+                book.getImageUrl(), deadlineMillis, message));
 
         if (addGoalCheckbox.isChecked()) {
             Intent goalIntent = new Intent(this, CreateGoal.class);
             goalIntent.putExtra("bookName", book.getName());
-            goalIntent.putExtra("deadlineMillis", triggerMillis);
+            goalIntent.putExtra("deadlineMillis", deadlineMillis);
             goalIntent.putExtra("bookImageUrl", book.getImageUrl());
             goalIntent.putExtra("bookId", book.getDocId());
             startActivity(goalIntent);
@@ -289,13 +289,4 @@ public class CreateAlarm extends AppCompatActivity {
                 .addOnFailureListener(e ->
                         Toast.makeText(this, "Failed to load books", Toast.LENGTH_SHORT).show());
     }
-
-
-
-
-
-
-
-
-
 }

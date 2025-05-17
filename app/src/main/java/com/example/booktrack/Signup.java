@@ -4,13 +4,13 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,18 +20,19 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
-import com.google.firebase.firestore.FieldValue;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Signup extends AppCompatActivity {
-    private EditText email_signup, password_signup;
-    private Button signup_btn;
-    private TextView passMust, signUp_TextVeiw;
-    private View signup_view;
+    EditText emailInput;
+    EditText passwordInput;
+    Button signupBtn;
+    TextView passMust;
+    TextView signUpTextView;
 
     private FirebaseAuth FBAuth;
 
@@ -46,77 +47,69 @@ public class Signup extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        email_signup = findViewById(R.id.email_signup);
-        password_signup = findViewById(R.id.password_signup);
-        signup_btn = findViewById(R.id.signup_btn);
-        FBAuth = FirebaseAuth.getInstance();
-        signup_btn.setOnClickListener(v -> registerUser());
+        emailInput = findViewById(R.id.email_signup);
+        passwordInput = findViewById(R.id.password_signup);
+        signupBtn = findViewById(R.id.signup_btn);
         passMust = findViewById(R.id.passMust);
-        signUp_TextVeiw = findViewById(R.id.signUp_TextVeiw);
-        signup_view = findViewById(R.id.main);
+        signUpTextView = findViewById(R.id.signUp_TextVeiw);
+        findViewById(R.id.main).setBackgroundColor(Color.parseColor("#eed9c4"));
 
+
+        signupBtn.setBackgroundColor(Color.parseColor("#FAF0E6"));
+        signupBtn.setTextColor(Color.BLACK);
+        signUpTextView.setTextColor(Color.parseColor("#d9b99b"));
         passMust.setTextColor(Color.parseColor("#d9b99b"));
-        signup_btn.setBackgroundColor(Color.parseColor("#FAF0E6"));
-        signup_btn.setTextColor(Color.BLACK);
-        signUp_TextVeiw.setTextColor(Color.parseColor("#d9b99b"));
-        signup_view.setBackgroundColor(Color.parseColor("#eed9c4"));
+
+        FBAuth = FirebaseAuth.getInstance();
+
+        signupBtn.setOnClickListener(v -> registerUser(emailInput, passwordInput));
     }
-    private void registerUser(){
-        String email = email_signup.getText().toString().trim();
-        String password = password_signup.getText().toString().trim();
+
+    private void registerUser(EditText emailInput, EditText passwordInput) {
+        String email = emailInput.getText().toString().trim();
+        String password = passwordInput.getText().toString().trim();
 
         if (!isValidEmail(email)) {
-            email_signup.setError("Invalid Email");
+            emailInput.setError("Invalid Email");
             return;
         }
+
         if (TextUtils.isEmpty(password) || password.length() < 6) {
-            password_signup.setError("Password must be at least 6 characters");
+            passwordInput.setError("Password must be at least 6 characters");
             return;
         }
+
         FBAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = FBAuth.getCurrentUser();
-                        Toast.makeText(Signup.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
+
                         if (user != null) {
                             String uid = user.getUid();
-
                             getSharedPreferences("BookTrackPrefs", MODE_PRIVATE)
                                     .edit()
                                     .putString("uid", uid)
                                     .apply();
+
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-                            // Create a user document (optional)
+
                             Map<String, Object> userData = new HashMap<>();
                             userData.put("createdAt", FieldValue.serverTimestamp());
-                            db.collection("users")
-                                    .document(uid)
-                                    .set(userData, SetOptions.merge());
-
-                            // Add a default book
-                            Map<String, Object> defaultBook = new HashMap<>();
-                            defaultBook.put("name", "Welcome to BookTrack");
-                            defaultBook.put("author", "BookTrack AI");
-                            defaultBook.put("genre", "Getting Started");
-                            defaultBook.put("situation", "To Read");
-                            defaultBook.put("page count", 1);
-                            defaultBook.put("imageUrl", "https://m.media-amazon.com/images/I/616bdy4E+VL._SY522_.jpg");
-
-                            db.collection("users")
-                                    .document(uid)
-                                    .collection("books")
-                                    .add(defaultBook)
-                                    .addOnSuccessListener(docRef -> Log.d("Firestore", "Default book added"))
-                                    .addOnFailureListener(e -> Log.e("Firestore", "Failed to add book", e));
+                            db.collection("users").document(uid).set(userData, SetOptions.merge());
                         }
 
+                        Toast.makeText(Signup.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
                         finish();
                     } else {
-                        Toast.makeText(Signup.this, "Registration Failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        String errorMsg = (task.getException() != null) ? task.getException().getMessage() : "Unknown error";
+                        Toast.makeText(Signup.this, "Registration Failed: " + errorMsg, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
+
+
+
     private boolean isValidEmail(String email) {
         return !TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
