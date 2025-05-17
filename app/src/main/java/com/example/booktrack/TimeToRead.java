@@ -31,7 +31,7 @@ public class TimeToRead extends AppCompatActivity {
             if (item.getItemId() == R.id.nav_alarm) {
                 selectedFragment = new AlarmsFragment();
             } else if (item.getItemId() == R.id.nav_goal) {
-                /*selectedFragment = new GoalFragment();*/
+                selectedFragment = new GoalsFragment();
             } else if (item.getItemId() == R.id.nav_timer) {
                 selectedFragment = new TimerFragment();
             } else {

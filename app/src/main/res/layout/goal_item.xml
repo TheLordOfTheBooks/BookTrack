@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:ndroid="http://schemas.android.com/tools"
+    android:padding="12dp"
+    android:background="#F0F0F0"
+    android:layout_marginBottom="12dp"
+    android:layout_margin="10dp"
+    card_view:cardCornerRadius="8dp"
+    card_view:cardElevation="4dp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:layout_height="match_parent"
+        android:background="#c3b091">
+
+        <ImageView
+            android:id="@+id/book_cover"
+            android:layout_width="80dp"
+            android:layout_height="110dp"
+            android:scaleType="centerCrop"
+            android:visibility="visible"
+            android:src="#c3b091"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="12dp">
+
+            <TextView
+                android:id="@+id/goal_description"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/book_name_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_marginTop="4dp"
+                android:text="Book Name" />
+
+            <TextView
+                android:id="@+id/goal_deadline"
+                android:text="Deadline: "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp" />
+
+            <TextView
+                android:id="@+id/deadline_passed_warning"
+                android:text="* Deadline passed"
+                android:textColor="#D32F2F"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:textStyle="bold"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:id="@+id/goal_state_change"
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp" />
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center">
+
+                    <Button
+                        android:id="@+id/button_failed"
+                        android:text="Failed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="#FAF0E6"
+                        android:textColor="#000000" />
+
+
+                    <Button
+                        android:id="@+id/button_done"
+                        android:text="Done"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="#FAF0E6"
+                        android:textColor="#000000" />
+
+                </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginTop="0dp"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/button_delete"
+                    android:text="Delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#D32F2F"
+                    android:textColor="#000000"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

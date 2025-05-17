@@ -78,36 +78,38 @@ public class Signup extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         FirebaseUser user = FBAuth.getCurrentUser();
                         Toast.makeText(Signup.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
+                        if (user != null) {
+                            String uid = user.getUid();
 
-                        // ✅ FIRESTORE BOOK CREATION START
-                        String uid = user.getUid();
-                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                            getSharedPreferences("BookTrackPrefs", MODE_PRIVATE)
+                                    .edit()
+                                    .putString("uid", uid)
+                                    .apply();
+                            FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-                        // Create a user document (optional)
-                        Map<String, Object> userData = new HashMap<>();
-                        userData.put("createdAt", FieldValue.serverTimestamp());
-                        db.collection("users")
-                                .document(uid)
-                                .set(userData, SetOptions.merge());
+                            // Create a user document (optional)
+                            Map<String, Object> userData = new HashMap<>();
+                            userData.put("createdAt", FieldValue.serverTimestamp());
+                            db.collection("users")
+                                    .document(uid)
+                                    .set(userData, SetOptions.merge());
 
-                        // Add a default book
-                        Map<String, Object> defaultBook = new HashMap<>();
-                        defaultBook.put("name", "Welcome to BookTrack");
-                        defaultBook.put("author", "BookTrack AI");
-                        defaultBook.put("genre", "Getting Started");
-                        defaultBook.put("situation", "To Read");
-                        defaultBook.put("page count", 1);
-                        defaultBook.put("imageUrl", "https://m.media-amazon.com/images/I/616bdy4E+VL._SY522_.jpg");
+                            // Add a default book
+                            Map<String, Object> defaultBook = new HashMap<>();
+                            defaultBook.put("name", "Welcome to BookTrack");
+                            defaultBook.put("author", "BookTrack AI");
+                            defaultBook.put("genre", "Getting Started");
+                            defaultBook.put("situation", "To Read");
+                            defaultBook.put("page count", 1);
+                            defaultBook.put("imageUrl", "https://m.media-amazon.com/images/I/616bdy4E+VL._SY522_.jpg");
 
-
-                        db.collection("users")
-                                .document(uid)
-                                .collection("books")
-                                .add(defaultBook)
-                                .addOnSuccessListener(docRef -> Log.d("Firestore", "Default book added"))
-                                .addOnFailureListener(e -> Log.e("Firestore", "Failed to add book", e));
-                        // ✅ FIRESTORE BOOK CREATION END
-
+                            db.collection("users")
+                                    .document(uid)
+                                    .collection("books")
+                                    .add(defaultBook)
+                                    .addOnSuccessListener(docRef -> Log.d("Firestore", "Default book added"))
+                                    .addOnFailureListener(e -> Log.e("Firestore", "Failed to add book", e));
+                        }
 
                         finish();
                     } else {

@@ -1,29 +1,38 @@
 package com.example.booktrack;
 
-import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import android.os.CountDownTimer;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.*;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import android.view.LayoutInflater;
-import android.content.Intent;
-import androidx.core.content.ContextCompat;
-import android.os.Build;
 import android.Manifest;
-import android.content.pm.PackageManager;
+import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.provider.Settings;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 
 public class TimerFragment extends Fragment {
@@ -35,6 +44,10 @@ public class TimerFragment extends Fragment {
     private long timeLeftInMillis;
     EditText secondsInput, minutesInput, hoursInput;
     private boolean shouldStartTimerAfterPermission = false;
+    private FirebaseFirestore db;
+    private FirebaseUser currentUser;
+    private ListenerRegistration alarmListener;
+    private Button stopSoundButton;
 
     public TimerFragment() {}
 
@@ -56,15 +69,29 @@ public class TimerFragment extends Fragment {
         startButton.setOnClickListener(v -> startTimer());
         cancelButton.setOnClickListener(v -> cancelTimer());
         createNotificationChannel();
+
+        db = FirebaseFirestore.getInstance();
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        listenToAndCleanExpiredAlarms();
+
+        stopSoundButton = view.findViewById(R.id.stop_sound_button);
+
+        stopSoundButton.setOnClickListener(v -> {
+            Intent stopIntent = new Intent(requireContext(), TimerService.class);
+            stopIntent.setAction(TimerService.ACTION_STOP);
+            requireContext().stopService(stopIntent);
+            stopSoundButton.setVisibility(View.GONE);
+        });
+
+
     }
 
     private void startTimer() {
-
         int hours = parseTimeInput(hoursInput.getText().toString());
         int minutes = parseTimeInput(minutesInput.getText().toString());
         int seconds = parseTimeInput(secondsInput.getText().toString());
-
-
+        stopSoundButton.setVisibility(View.GONE);
 
         long totalMillis = (hours * 3600 + minutes * 60 + seconds) * 1000L;
 
@@ -74,7 +101,6 @@ public class TimerFragment extends Fragment {
         }
 
         timeLeftInMillis = totalMillis;
-
         countDownTimer = new CountDownTimer(timeLeftInMillis, 1000) {
             public void onTick(long millisUntilFinished) {
                 timeLeftInMillis = millisUntilFinished;
@@ -86,29 +112,11 @@ public class TimerFragment extends Fragment {
 
             public void onFinish() {
                 countdownText.setText("Time's up!");
-
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(requireContext(), "timer_channel_id")
-                        .setSmallIcon(R.drawable.ic_launcher_foreground)
-                        .setContentTitle("Time's Up!")
-                        .setContentText("Your Time For Reading Has Ended.")
-                        .setPriority(NotificationCompat.PRIORITY_HIGH)
-                        .setAutoCancel(true);
-
-                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(requireContext());
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
-                        ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS)
-                                != PackageManager.PERMISSION_GRANTED) {
-                    shouldStartTimerAfterPermission = true;
-                    requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 101);
-                    return;
-                }
-
-                notificationManager.notify(1001, builder.build());
+                stopSoundButton.setVisibility(View.VISIBLE);
             }
         }.start();
 
-        startForegroundTimer(timeLeftInMillis);
+        startForegroundTimer(timeLeftInMillis); // ✅ this was missing
     }
 
     private int parseTimeInput(String input) {
@@ -128,6 +136,7 @@ public class TimerFragment extends Fragment {
         Intent stopIntent = new Intent(requireContext(), TimerService.class);
         requireContext().stopService(stopIntent);
     }
+
 
     private void startForegroundTimer(long millis) {
         requestNotificationPermission();
@@ -156,7 +165,13 @@ public class TimerFragment extends Fragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS)
                     != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 101);
+                ActivityResultLauncher<String> notificationPermissionLauncher = registerForActivityResult(
+                        new ActivityResultContracts.RequestPermission(),
+                        isGranted -> {
+                            if (isGranted) startTimer();
+                        }
+                );
+                notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
             }
         }
     }
@@ -174,6 +189,63 @@ public class TimerFragment extends Fragment {
             } else {
                 Toast.makeText(getContext(), "Notification permission denied", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    private void listenToAndCleanExpiredAlarms() {
+        if (currentUser == null) return;
+
+        alarmListener = db.collection("users")
+                .document(currentUser.getUid())
+                .collection("alarms")
+                .addSnapshotListener((snapshot, error) -> {
+                    if (error != null) {
+                        Log.e("TimerFragment", "Failed to load alarms", error);
+                        return;
+                    }
+
+                    if (snapshot != null) {
+                        for (QueryDocumentSnapshot doc : snapshot) {
+                            AlarmItem alarm = doc.toObject(AlarmItem.class);
+                            if (alarm.getTriggerMillis() < System.currentTimeMillis()) {
+                                doc.getReference().delete()
+                                        .addOnSuccessListener(aVoid ->
+                                                Log.d("TimerFragment", "Deleted expired alarm: " + alarm.getAlarmId()))
+                                        .addOnFailureListener(e ->
+                                                Log.e("TimerFragment", "Failed to delete expired alarm", e));
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void scheduleTimerAlarm(long durationMillis) {
+        long triggerAtMillis = System.currentTimeMillis() + durationMillis;
+
+        Intent intent = new Intent(requireContext(), TimerReceiver.class);
+        intent.setAction("TIMER_ALARM");
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                requireContext(),
+                1002,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+        );
+
+
+        AlarmManager alarmManager = (AlarmManager) requireContext().getSystemService(Context.ALARM_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (!alarmManager.canScheduleExactAlarms()) {
+                Intent settingsIntent = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+                startActivity(settingsIntent);
+                return;
+            }
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent);
+        } else {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent);
         }
     }
 

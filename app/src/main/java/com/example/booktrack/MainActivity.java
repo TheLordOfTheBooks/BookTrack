@@ -12,10 +12,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button AddBook_btn, BookList_btn, TimeToRead_btn;
     private View main_view;
+    FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,36 +31,32 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        AddBook_btn = findViewById(R.id.add_book_button);
         BookList_btn = findViewById(R.id.book_list_button);
-        TimeToRead_btn = findViewById(R.id.add_book);
+        TimeToRead_btn = findViewById(R.id.time_to_read_button);
         main_view = findViewById(R.id.main);
+        fab = findViewById(R.id.fab);
+        fab.setOnClickListener(v -> {
+            startActivity(new Intent(this, AddMyBook.class));
+        });
 
-        AddBook_btn.setBackgroundColor(Color.parseColor("#FAF0E6"));
-        AddBook_btn.setTextColor(Color.BLACK);
+        BookList_btn.setOnClickListener(v -> {
+            startActivity(new Intent(this, BookList.class));
+        });
+
+        TimeToRead_btn.setOnClickListener(v -> {
+            startActivity(new Intent(this, TimeToRead.class));
+        });
+
+
         BookList_btn.setBackgroundColor(Color.parseColor("#FAF0E6"));
         BookList_btn.setTextColor(Color.BLACK);
         TimeToRead_btn.setBackgroundColor(Color.parseColor("#FAF0E6"));
         TimeToRead_btn.setTextColor(Color.BLACK);
         main_view.setBackgroundColor(Color.parseColor("#eed9c4"));
-
-
     }
 
-    public void AddMyBook(View view){
-        Intent si = new Intent(this, AddMyBook.class);
-        startActivity(si);
-    }
 
-    public void BookList(View view){
-        Intent si = new Intent(this, BookList.class);
-        startActivity(si);
-    }
 
-    public void TimeToRead(View view){
-        Intent si = new Intent(this, TimeToRead.class);
-        startActivity(si);
-    }
 
 
 

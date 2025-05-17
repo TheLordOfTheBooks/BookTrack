@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateGoal"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:text="Create a Goal"
+            android:textSize="24sp"
+            android:layout_marginBottom="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#d9b99b"/>
+
+        <!-- Deadline from alarm -->
+        <TextView
+            android:id="@+id/goal_deadline"
+            android:text="Deadline: "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Goal Type Options -->
+        <TextView
+            android:text="What is your goal?"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <RadioGroup
+            android:id="@+id/goal_type_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+
+            <RadioButton
+                android:id="@+id/radio_finish_book"
+                android:text="Finish book"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <RadioButton
+                android:id="@+id/radio_other"
+                android:text="Other"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RadioGroup>
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Describe your goal"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxBackgroundMode="outline">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/goal_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:inputType="text"
+                android:layout_marginTop="8dp"
+                android:maxLines="1"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Change book state option -->
+        <TextView
+            android:text="Do you want to change the book's situation when the goal is done?"
+            android:layout_marginTop="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Switch
+            android:id="@+id/change_state_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false" />
+
+        <Spinner
+            android:id="@+id/book_state_spinner"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" />
+
+        <!-- Save Button -->
+        <Button
+            android:id="@+id/save_goal_button"
+            android:text="Save Goal"
+            android:layout_marginTop="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</ScrollView>

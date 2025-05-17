@@ -16,7 +16,7 @@
     <ImageView
         android:id="@+id/book_image"
         android:layout_width="80dp"
-        android:layout_height="100dp"
+        android:layout_height="110dp"
         android:scaleType="centerCrop"
         android:src="#c3b091"/>
 

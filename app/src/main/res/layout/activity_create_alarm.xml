@@ -57,30 +57,43 @@
         <RadioGroup
             android:id="@+id/purpose_radio_group"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:buttonTint="#000000"
+            android:textColor="#000000">
 
             <RadioButton
                 android:id="@+id/finish_book_radio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Finish book until that date" />
+                android:text="Finish book until that date"
+                />
 
             <RadioButton
                 android:id="@+id/other_radio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Other" />
+                android:text="Other"
+                />
         </RadioGroup>
 
-        <!-- Message if 'Other' is selected -->
-        <EditText
-            android:id="@+id/other_message_input"
+
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Write your message here"
-            android:visibility="gone"
-            android:inputType="text"
-            android:layout_marginTop="8dp" />
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxBackgroundMode="outline">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/other_message_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:inputType="text"
+                android:layout_marginTop="8dp"
+                android:maxLines="1"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- 4. Ask if user wants to add goal -->
         <CheckBox
@@ -88,7 +101,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Add a reading goal?"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginTop="16dp" />
 
         <!-- Final Add Alarm Button -->
         <Button

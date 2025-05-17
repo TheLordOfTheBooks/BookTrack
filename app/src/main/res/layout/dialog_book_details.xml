@@ -5,7 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="#eed9c4">
+    android:background="#eed9c4"
+    android:layout_gravity="center">
 
 
 

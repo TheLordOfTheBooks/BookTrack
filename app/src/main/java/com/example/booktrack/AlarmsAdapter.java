@@ -19,10 +19,15 @@ import java.util.Locale;
 public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmViewHolder>{
     private final Context context;
     private final List<AlarmItem> alarmList;
+    private OnAlarmLongClickListener longClickListener;
 
     public AlarmsAdapter(Context context, List<AlarmItem> alarmList) {
         this.context = context;
         this.alarmList = alarmList;
+    }
+
+    public void setOnAlarmLongClickListener(OnAlarmLongClickListener listener) {
+        this.longClickListener = listener;
     }
 
     @NonNull
@@ -35,15 +40,26 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmViewH
     @Override
     public void onBindViewHolder(@NonNull AlarmViewHolder holder, int position) {
         AlarmItem alarm = alarmList.get(position);
+
         holder.bookTitle.setText(alarm.getBookName());
 
-        long millis = alarm.getTriggerMillis();
-        Date date = new Date(millis);
+        Date date = new Date(alarm.getTriggerMillis());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+
         holder.dateText.setText(dateFormat.format(date));
         holder.timeText.setText(timeFormat.format(date));
-        Glide.with(context).load(alarm.getBookImageUrl()).into(holder.bookCover);
+
+        Glide.with(context)
+                .load(alarm.getBookImageUrl())
+                .into(holder.bookCover);
+
+        holder.itemView.setOnLongClickListener(v -> {
+            if (longClickListener != null) {
+                longClickListener.onAlarmLongClick(alarm);
+            }
+            return true;
+        });
     }
 
     @Override
@@ -62,6 +78,10 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmViewH
             dateText = itemView.findViewById(R.id.alarm_date);
             timeText = itemView.findViewById(R.id.alarm_time);
         }
+    }
+
+    public interface OnAlarmLongClickListener {
+        void onAlarmLongClick(AlarmItem alarm);
     }
 
 }

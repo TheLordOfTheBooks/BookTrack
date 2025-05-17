@@ -1,24 +1,24 @@
 package com.example.booktrack;
 
-import android.Manifest;
-import android.app.Service;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.IBinder;
-import androidx.core.content.ContextCompat;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-import android.media.AudioAttributes;
-import android.net.Uri;
-import android.media.RingtoneManager;
-import android.widget.*;
 
 
 public class TimerService extends Service {
@@ -28,37 +28,50 @@ public class TimerService extends Service {
     public static final String ACTION_STOP = "STOP_TIMER";
 
     private CountDownTimer countDownTimer;
+    private MediaPlayer mediaPlayer;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null && ACTION_STOP.equals(intent.getAction())) {
+            stopAlarmSound();
             stopSelf();
             return START_NOT_STICKY;
         }
 
+        if (intent == null) {
+            stopSelf();
+            return START_NOT_STICKY;
+        }
         long durationMillis = intent.getLongExtra(EXTRA_DURATION, 0);
         createNotificationChannel();
+        AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        audioManager.setStreamVolume(AudioManager.STREAM_ALARM,
+                audioManager.getStreamMaxVolume(AudioManager.STREAM_ALARM),
+                0);
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Timer Running")
                 .setContentText("Your countdown is in progress...")
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setDefaults(0)
+                .setSound(null)
                 .build();
-
-
 
         startForeground(1, notification);
 
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+
         countDownTimer = new CountDownTimer(durationMillis, 1000) {
             @Override
-            public void onTick(long millisUntilFinished) {
-            }
+            public void onTick(long millisUntilFinished) {}
 
             @Override
             public void onFinish() {
                 sendFinishedNotification();
-                stopSelf();
+                new android.os.Handler().postDelayed(() -> stopSelf(), 20000);
             }
         }.start();
 
@@ -66,23 +79,29 @@ public class TimerService extends Service {
     }
 
     private void sendFinishedNotification() {
+        playAlarmSound();
+        Intent stopIntent = new Intent(getApplicationContext(), TimerService.class);
+        stopIntent.setAction(ACTION_STOP);
+        PendingIntent stopPendingIntent = PendingIntent.getService(
+                this,
+                0,
+                stopIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+        );
+
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Timer Finished")
                 .setContentText("Your Time For Reading Has Ended.")
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setDefaults(Notification.DEFAULT_ALL)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setDefaults(0)
+                .setSound(null)
                 .setAutoCancel(true)
+                .addAction(R.drawable.ic_launcher_foreground, "Stop Sound", stopPendingIntent) // 🔔 Stop Button
                 .build();
-
-
-
-
 
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         manager.notify(2, notification);
-
     }
 
     private void createNotificationChannel() {
@@ -111,17 +130,55 @@ public class TimerService extends Service {
         }
     }
 
-    @Override
-    public void onDestroy() {
-        if (countDownTimer != null) {
-            countDownTimer.cancel();
-        }
-        super.onDestroy();
-    }
-
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
+
+    @Override
+    public void onDestroy() {
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+        stopAlarmSound(); // <- now stops MediaPlayer
+        super.onDestroy();
+    }
+
+    private void playAlarmSound() {
+        Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        if (soundUri == null) {
+            soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        }
+
+        mediaPlayer = new MediaPlayer();
+        try {
+            mediaPlayer.setDataSource(getApplicationContext(), soundUri);
+
+
+                mediaPlayer.setAudioAttributes(new AudioAttributes.Builder()
+                        .setUsage(AudioAttributes.USAGE_ALARM)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                        .build());
+
+
+            mediaPlayer.setLooping(true);
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+        } catch (Exception e) {
+            Log.e("TimerService", "Failed to play alarm", e);
+        }
+    }
+
+    private void stopAlarmSound() {
+        if (mediaPlayer != null) {
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+            }
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
+
+
 }

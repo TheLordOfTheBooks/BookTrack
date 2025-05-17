@@ -86,11 +86,12 @@
             android:layout_marginStart="16dp"
             app:backgroundTint="#FAF0E6"
             android:textColor="@android:color/black"/>
+
+
     </LinearLayout>
 
 
 
-    <!-- Countdown Text -->
     <TextView
         android:id="@+id/countdown_text"
         android:layout_width="wrap_content"
@@ -101,6 +102,19 @@
         app:layout_constraintTop_toBottomOf="@id/button_row"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/stop_sound_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stop Sound"
+        android:visibility="gone"
+        app:backgroundTint="#FAF0E6"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toBottomOf="@id/countdown_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
 
 
 

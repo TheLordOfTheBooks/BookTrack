@@ -79,6 +79,7 @@ public class Login extends AppCompatActivity {
     private void loginUser(){
         String email = email_login.getText().toString().trim();
         String password = password_login.getText().toString().trim();
+
         if (TextUtils.isEmpty(email)) {
             email_login.setError("Email is required");
             return;
@@ -87,10 +88,19 @@ public class Login extends AppCompatActivity {
             password_login.setError("Password is required");
             return;
         }
+
         FBAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = FBAuth.getCurrentUser();
+                        if (user != null) {
+
+                            getSharedPreferences("BookTrackPrefs", MODE_PRIVATE)
+                                    .edit()
+                                    .putString("uid", user.getUid())
+                                    .apply();
+                        }
+
                         Toast.makeText(Login.this, "Login Successful!", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
