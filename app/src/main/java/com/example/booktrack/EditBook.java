@@ -1,47 +1,46 @@
 package com.example.booktrack;
 
-import android.graphics.Color;
-import android.os.Bundle;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.widget.ImageView;
-import android.widget.Toast;
-import android.view.View;
-import android.os.Build;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import android.content.Intent;
-import android.widget.*;
-import android.view.View;
-import androidx.annotation.Nullable;
+
 import com.bumptech.glide.Glide;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
-import android.text.TextUtils;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-
-import java.util.UUID;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class EditBook extends AppCompatActivity {
 
@@ -51,6 +50,7 @@ public class EditBook extends AppCompatActivity {
     private Button saveButton;
     private Button changeImageButton;
     private View editBook_view;
+    FloatingActionButton arrow;
 
     private String bookId;
     private final String[] genres = {"Fantasy", "Mystery", "Horror", "Romance", "Young Adult", "Others"};
@@ -80,13 +80,16 @@ public class EditBook extends AppCompatActivity {
         stateSpinner = findViewById(R.id.edit_state);
         coverImage = findViewById(R.id.edit_cover);
         editBook_view = findViewById(R.id.main);
+        saveButton = findViewById(R.id.save_book_button);
+        changeImageButton = findViewById(R.id.change_image_button);
+        arrow = findViewById(R.id.arrow);
+
+        arrow.setOnClickListener(v -> finish());
         coverImage.setOnClickListener(v -> {
             Toast.makeText(this, "Image button clicked", Toast.LENGTH_SHORT).show();
             checkPermissions();
         });
-        saveButton = findViewById(R.id.save_book_button);
         saveButton.setOnClickListener(v -> saveUpdatedBook());
-        changeImageButton = findViewById(R.id.change_image_button);
         changeImageButton.setOnClickListener(v -> checkPermissions());
 
         changeImageButton.setBackgroundColor(Color.parseColor("#FAF0E6"));

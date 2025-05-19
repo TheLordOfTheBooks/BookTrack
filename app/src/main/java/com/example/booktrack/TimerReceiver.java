@@ -11,7 +11,7 @@ public class TimerReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if ("TIMER_ALARM".equals(intent.getAction())) {
             Intent serviceIntent = new Intent(context, TimerService.class);
-            serviceIntent.putExtra(TimerService.EXTRA_DURATION, 0); // Only to trigger sound
+            serviceIntent.putExtra(TimerService.EXTRA_DURATION, 0);
             ContextCompat.startForegroundService(context, serviceIntent);
         }
     }

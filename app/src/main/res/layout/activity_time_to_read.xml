@@ -6,7 +6,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".TimeToRead">
+    tools:context=".TimeToRead"
+    android:background="#eed9c4">
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/arrow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:clickable="true"
+        app:backgroundTint="#FAF0E6"
+        app:tint="@color/black"
+        app:srcCompat="@drawable/baseline_arrow_back_24" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container"

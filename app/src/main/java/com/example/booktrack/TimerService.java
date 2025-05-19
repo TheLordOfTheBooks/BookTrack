@@ -5,10 +5,8 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.media.AudioAttributes;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -44,15 +42,10 @@ public class TimerService extends Service {
         }
         long durationMillis = intent.getLongExtra(EXTRA_DURATION, 0);
         createNotificationChannel();
-        AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        audioManager.setStreamVolume(AudioManager.STREAM_ALARM,
-                audioManager.getStreamMaxVolume(AudioManager.STREAM_ALARM),
-                0);
-
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Timer Running")
                 .setContentText("Your countdown is in progress...")
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(R.mipmap.ic_logo_round)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setDefaults(0)
                 .setSound(null)
@@ -92,12 +85,12 @@ public class TimerService extends Service {
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Timer Finished")
                 .setContentText("Your Time For Reading Has Ended.")
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(R.mipmap.ic_logo_round)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setDefaults(0)
                 .setSound(null)
                 .setAutoCancel(true)
-                .addAction(R.drawable.ic_launcher_foreground, "Stop Sound", stopPendingIntent) // 🔔 Stop Button
+                .addAction(R.mipmap.ic_logo_round, "Stop Sound", stopPendingIntent)
                 .build();
 
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -179,6 +172,4 @@ public class TimerService extends Service {
             mediaPlayer = null;
         }
     }
-
-
 }

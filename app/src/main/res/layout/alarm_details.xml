@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:text="Alarm"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <ImageView
             android:id="@+id/popup_book_image"
@@ -33,19 +33,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/popup_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp" />
+            android:layout_marginTop="4dp"/>
 
         <TextView
             android:id="@+id/popup_datetime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp" />
+            android:layout_marginTop="4dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -58,7 +58,7 @@
                 android:id="@+id/popup_cancel_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cancel" />
+                android:text="Cancel"/>
 
             <Button
                 android:id="@+id/popup_delete_button"
@@ -67,7 +67,7 @@
                 android:text="Delete"
                 android:layout_marginStart="16dp"
                 android:textColor="#FFFFFF"
-                android:backgroundTint="#D32F2F" />
+                android:backgroundTint="#D32F2F"/>
         </LinearLayout>
     </LinearLayout>
 

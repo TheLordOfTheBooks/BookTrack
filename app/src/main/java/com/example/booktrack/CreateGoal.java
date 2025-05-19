@@ -2,24 +2,33 @@ package com.example.booktrack;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
+import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import android.view.View;
-import android.widget.*;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 public class CreateGoal extends AppCompatActivity {
 
@@ -30,6 +39,7 @@ public class CreateGoal extends AppCompatActivity {
     private Switch changeStateSwitch;
     private Spinner stateSpinner;
     private Button saveGoalButton;
+    FloatingActionButton arrow;
 
     private Calendar deadlineCalendar;
     private final String[] bookStates = {
@@ -58,14 +68,14 @@ public class CreateGoal extends AppCompatActivity {
         changeStateSwitch = findViewById(R.id.change_state_switch);
         stateSpinner = findViewById(R.id.book_state_spinner);
         saveGoalButton = findViewById(R.id.save_goal_button);
-
         View root = findViewById(R.id.main);
-        root.setBackgroundColor(Color.parseColor("#eed9c4")); // Soft beige background
 
+        arrow = findViewById(R.id.arrow);
+        arrow.setOnClickListener(v -> finish());
+
+        root.setBackgroundColor(Color.parseColor("#eed9c4")); // Soft beige background
         saveGoalButton.setBackgroundColor(Color.parseColor("#FAF0E6")); // Light cream buttons
         saveGoalButton.setTextColor(Color.BLACK);
-
-
 
         stateSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, bookStates));
 

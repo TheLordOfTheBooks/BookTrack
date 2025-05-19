@@ -14,9 +14,6 @@ public class AlarmScheduler {
             return;
         }
 
-        Log.d("AlarmScheduler", "\u23f0 Scheduling alarm for: " + alarm.getDeadlineMillis());
-        Log.d("AlarmScheduler", "\ud83d\udcc6 Current time: " + System.currentTimeMillis());
-
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         if (alarmManager == null) {
             Log.e("AlarmScheduler", "AlarmManager not available");
@@ -48,23 +45,4 @@ public class AlarmScheduler {
         Log.i("AlarmScheduler", "Alarm scheduled for: " + alarm.getDeadlineMillis());
     }
 
-    public static void cancel(Context context, AlarmItem alarm) {
-        if (alarm == null) return;
-
-        Intent intent = new Intent(context, AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                context,
-                alarm.getAlarmId().hashCode(),
-                intent,
-                PendingIntent.FLAG_NO_CREATE | PendingIntent.FLAG_IMMUTABLE
-        );
-
-        if (pendingIntent != null) {
-            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            if (alarmManager != null) {
-                alarmManager.cancel(pendingIntent);
-                Log.i("AlarmScheduler", "Canceled alarm: " + alarm.getAlarmId());
-            }
-        }
-    }
 }

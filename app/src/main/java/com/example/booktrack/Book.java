@@ -14,14 +14,17 @@ public class Book {
     }
 
     public String getName() {
+
         return name;
     }
 
     public String getAuthor() {
+
         return author;
     }
 
     public String getGenre() {
+
         return genre;
     }
 

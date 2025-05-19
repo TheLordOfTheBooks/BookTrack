@@ -1,22 +1,14 @@
 package com.example.booktrack;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
-import android.content.Context;
-import android.graphics.Color;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.*;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,7 +18,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.GoalViewHolder> {
     private final List<GoalItem> goalList;
@@ -51,24 +45,18 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.GoalViewHolder
         long now = System.currentTimeMillis();
         holder.deleteButton.setOnClickListener(v -> deleteGoal(goal));
 
-        // Deadline warning
         if (deadlineMillis < now) {
             holder.deadlineWarning.setVisibility(View.VISIBLE);
         } else {
             holder.deadlineWarning.setVisibility(View.GONE);
         }
 
-
-
-
-        
         holder.description.setText("Goal: " + goal.getDescription());
 
         String dateStr = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
                 .format(new Date(deadlineMillis));
         holder.deadlineMillis.setText("Deadline: " + dateStr);
 
-        // Book state info
         if (goal.isChangeState()) {
             holder.stateChange.setText("Change state to: " + goal.getNewState());
         } else {
@@ -76,8 +64,6 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.GoalViewHolder
         }
 
         holder.bookTitle.setText(goal.getBookName());
-
-        // Load book image if available
 
         String imageUrl = goal.getBookImageUrl();
         holder.bookCover.setImageResource(R.drawable.ic_launcher_background);
@@ -108,7 +94,6 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.GoalViewHolder
                     .show();
         });
 
-        // "Failed" button just deletes the goal
         holder.failedButton.setOnClickListener(v -> deleteGoal(goal));
     }
 

@@ -20,12 +20,18 @@ public class GoalItem {
 
     }
 
-    public String getDescription() { return description; }
+    public String getDescription() {
+        return description;
+    }
     public long getDeadlineMillis() {
         return deadlineMillis;
     }
-    public boolean isChangeState() { return changeState; }
-    public String getNewState() { return newState; }
+    public boolean isChangeState() {
+        return changeState;
+    }
+    public String getNewState() {
+        return newState;
+    }
 
     public String getBookImageUrl() {
         return bookImageUrl;
@@ -35,13 +41,10 @@ public class GoalItem {
         return bookId;
     }
 
-
-
     public String getId() {
         return id;
     }
 
-    // Setters (if needed)
     public void setBookImageUrl(String bookImageUrl) {
         this.bookImageUrl = bookImageUrl;
     }

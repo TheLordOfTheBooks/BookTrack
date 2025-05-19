@@ -10,6 +10,16 @@
     android:padding="30dp"
     tools:context=".Signup" >
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/arrow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:clickable="true"
+        app:backgroundTint="#FAF0E6"
+        app:tint="@color/black"
+        app:srcCompat="@drawable/baseline_arrow_back_24" />
+
     <TextView
         android:id="@+id/signUp_TextVeiw"
         android:text="Sign up"

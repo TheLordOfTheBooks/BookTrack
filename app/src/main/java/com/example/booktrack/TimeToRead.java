@@ -7,12 +7,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class TimeToRead extends AppCompatActivity {
+
+    FloatingActionButton arrow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +52,8 @@ public class TimeToRead extends AppCompatActivity {
 
         });
 
-        // Set default fragment
         navView.setSelectedItemId(R.id.nav_alarm);
+        arrow = findViewById(R.id.arrow);
+        arrow.setOnClickListener(v ->finish());
     }
 }

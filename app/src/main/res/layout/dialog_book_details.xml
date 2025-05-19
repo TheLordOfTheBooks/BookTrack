@@ -8,15 +8,13 @@
     android:background="#eed9c4"
     android:layout_gravity="center">
 
-
-
     <ImageView
         android:id="@+id/dialog_book_image"
         android:layout_width="120dp"
         android:layout_height="160dp"
         android:layout_gravity="center_horizontal"
         android:scaleType="centerCrop"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="16dp"/>
 
     <TextView
         android:id="@+id/dialog_book_name"
@@ -24,32 +22,32 @@
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:textSize="18sp"
-        android:layout_marginBottom="4dp" />
+        android:layout_marginBottom="4dp"/>
 
     <TextView
         android:id="@+id/dialog_book_author"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        android:layout_marginBottom="4dp" />
+        android:layout_marginBottom="4dp"/>
 
     <TextView
         android:id="@+id/dialog_book_genre"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp" />
+        android:layout_marginBottom="4dp"/>
 
     <TextView
         android:id="@+id/dialog_book_situation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp" />
+        android:layout_marginBottom="4dp"/>
 
     <TextView
         android:id="@+id/dialog_book_pagecount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="16dp"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/dialog_close_button"
@@ -57,7 +55,7 @@
         android:layout_height="wrap_content"
         app:backgroundTint="#FAF0E6"
         android:textColor="@android:color/black"
-        android:text="Close" />
+        android:text="Close"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -73,6 +71,7 @@
             android:text="Delete"
             app:backgroundTint="#FAF0E6"
             android:textColor="@android:color/black"/>
+
     </LinearLayout>
 
 </LinearLayout>

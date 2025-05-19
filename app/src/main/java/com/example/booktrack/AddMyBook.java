@@ -1,32 +1,38 @@
 package com.example.booktrack;
 
-import android.graphics.Color;
-import android.os.Bundle;
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.app.AlertDialog;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.widget.*;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
-import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -50,30 +56,14 @@ public class AddMyBook extends AppCompatActivity {
     private Uri imageUri;
     private String imageUrl;
     private View addBook_view;
+    FloatingActionButton arrow;
 
     private final String[] genres = {"Fantasy", "Mystery", "Horror", "Romance", "Young Adult", "Others"};
     private final String[] states = {"Read", "Currently Reading", "Stopped Reading", "Want to Read"};
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    private ActivityResultLauncher<Intent> pickImageLauncher;
+    private ActivityResultLauncher<Intent> takePhotoLauncher;
 
-        if (requestCode == REQUEST_PERMISSION) {
-            boolean granted = true;
-            for (int result : grantResults) {
-                if (result != PackageManager.PERMISSION_GRANTED) {
-                    granted = false;
-                    break;
-                }
-            }
-
-            if (granted) {
-                openImagePicker();
-            } else {
-                Toast.makeText(this, "Permission denied. Can't open camera or gallery.", Toast.LENGTH_LONG).show();
-            }
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +85,7 @@ public class AddMyBook extends AppCompatActivity {
         chooseImageBtn = findViewById(R.id.choose_image_btn);
         addBookBtn = findViewById(R.id.add_book_btn);
         addBook_view = findViewById(R.id.main);
+        arrow = findViewById(R.id.arrow);
 
         chooseImageBtn.setBackgroundColor(Color.parseColor("#FAF0E6"));
         chooseImageBtn.setTextColor(Color.BLACK);
@@ -119,18 +110,45 @@ public class AddMyBook extends AppCompatActivity {
                 android.R.layout.simple_spinner_dropdown_item,
                 states
         );
+
         stateAdapter.setDropDownViewResource(R.layout.spinner_items);
         stateSpinner.setAdapter(stateAdapter);
-
         chooseImageBtn.setOnClickListener(v -> checkPermissions());
         addBookBtn.setOnClickListener(v -> validateAndSubmit());
+        arrow.setOnClickListener(v -> finish());
+
+        pickImageLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        Uri selectedImageUri = result.getData().getData();
+                        if (selectedImageUri != null) {
+                            imageUri = selectedImageUri;
+                            coverPreview.setVisibility(View.VISIBLE);
+                            Glide.with(this).load(imageUri).into(coverPreview);
+                        }
+                    }
+                });
+
+        takePhotoLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        Bitmap photo = (Bitmap) result.getData().getExtras().get("data");
+                        if (photo != null) {
+                            String path = MediaStore.Images.Media.insertImage(getContentResolver(), photo, "title", null);
+                            imageUri = Uri.parse(path);
+                            coverPreview.setVisibility(View.VISIBLE);
+                            Glide.with(this).load(imageUri).into(coverPreview);
+                        }
+                    }
+                });
     }
 
     private void checkPermissions() {
         if ((android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU &&
                 ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) ||
-                (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.TIRAMISU &&
-                        ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) ||
+                (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) ||
                 ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                     android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU ?
@@ -142,6 +160,8 @@ public class AddMyBook extends AppCompatActivity {
         }
     }
 
+
+
     private void openImagePicker() {
         String[] options = {"Choose from Gallery", "Take a Photo"};
 
@@ -151,11 +171,11 @@ public class AddMyBook extends AppCompatActivity {
             if (which == 0) {
                 Intent pickIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 pickIntent.setType("image/*");
-                startActivityForResult(pickIntent, REQUEST_IMAGE_PICK);
+                pickImageLauncher.launch(pickIntent);
             } else if (which == 1) {
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivityForResult(takePictureIntent, REQUEST_CAMERA);
+                    takePhotoLauncher.launch(takePictureIntent);
                 }
             }
         });
@@ -173,8 +193,7 @@ public class AddMyBook extends AppCompatActivity {
             Bundle extras = data.getExtras();
             if (extras != null) {
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
-                Uri tempUri = Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), imageBitmap, "title", null));
-                imageUri = tempUri;
+                Uri imageUri = Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), imageBitmap, "title", null));
                 coverPreview.setVisibility(View.VISIBLE);
                 Glide.with(this).load(imageUri).into(coverPreview);
             }
@@ -246,6 +265,27 @@ public class AddMyBook extends AppCompatActivity {
                     finish();
                 })
                 .addOnFailureListener(e -> Toast.makeText(this, "Failed to save book", Toast.LENGTH_SHORT).show());
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == REQUEST_PERMISSION) {
+            boolean granted = true;
+            for (int result : grantResults) {
+                if (result != PackageManager.PERMISSION_GRANTED) {
+                    granted = false;
+                    break;
+                }
+            }
+
+            if (granted) {
+                openImagePicker();
+            } else {
+                Toast.makeText(this, "Permission denied. Can't open camera or gallery.", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
 }

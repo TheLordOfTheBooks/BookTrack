@@ -14,12 +14,21 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- 1. Pick Date & Time -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/arrow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:clickable="true"
+            app:backgroundTint="#FAF0E6"
+            app:tint="@color/black"
+            app:srcCompat="@drawable/baseline_arrow_back_24"/>
+
         <Button
             android:id="@+id/pick_date_time_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Pick Date and Time" />
+            android:text="Pick Date and Time"/>
 
         <TextView
             android:id="@+id/pick_book_textView"
@@ -37,22 +46,20 @@
             android:layout_marginTop="16dp"
             android:background="#f2e2ce"/>
 
-        <!-- 2. Show chosen Date & Time -->
         <TextView
             android:id="@+id/selected_date_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="No date/time selected"
             android:textSize="16sp"
-            android:layout_marginTop="12dp" />
+            android:layout_marginTop="12dp"/>
 
-        <!-- 3. Choose Purpose -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Why this alarm?"
             android:textSize="16sp"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="16dp"/>
 
         <RadioGroup
             android:id="@+id/purpose_radio_group"
@@ -65,18 +72,14 @@
                 android:id="@+id/finish_book_radio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Finish book until that date"
-                />
+                android:text="Finish book until that date" />
 
             <RadioButton
                 android:id="@+id/other_radio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Other"
-                />
+                android:text="Other" />
         </RadioGroup>
-
-
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -95,21 +98,19 @@
                 android:maxLines="1"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- 4. Ask if user wants to add goal -->
         <CheckBox
             android:id="@+id/add_goal_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Add a reading goal?"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="16dp"/>
 
-        <!-- Final Add Alarm Button -->
         <Button
             android:id="@+id/add_alarm_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Add Alarm"
-            android:layout_marginTop="24dp" />
+            android:layout_marginTop="24dp"/>
     </LinearLayout>
 
 </ScrollView>

@@ -8,8 +8,6 @@
     android:background="@android:color/white"
     tools:context=".MainActivity">
 
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,7 +15,6 @@
         android:gravity="center"
         android:padding="20dp"
         android:layout_marginBottom="90dp">
-
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/logoImageView"
@@ -30,7 +27,6 @@
         android:contentDescription="App logo"
         app:shapeAppearanceOverlay="@style/CircleImage"/>
 
-    <!-- Add a Book Button -->
     <Button
         android:id="@+id/book_list_button"
         android:layout_width="match_parent"
@@ -38,9 +34,8 @@
         android:text="Book List"
         android:textSize="18sp"
         android:textColor="@android:color/white"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="10dp"/>
 
-    <!-- Book List Button -->
     <Button
         android:id="@+id/time_to_read_button"
         android:layout_width="match_parent"
@@ -48,22 +43,18 @@
         android:text="Time to read"
         android:textSize="18sp"
         android:textColor="@android:color/white"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="10dp"/>
 
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/plus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
         android:layout_marginBottom="30dp"
         app:srcCompat="@drawable/add"
         app:backgroundTint="#FAF0E6"
-        app:tint="@color/black"
-        />
-
-
-
+        app:tint="@color/black"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

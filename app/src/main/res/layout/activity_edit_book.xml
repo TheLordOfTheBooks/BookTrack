@@ -11,8 +11,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:layout_gravity="center">
+        android:gravity="center_horizontal">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/arrow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:clickable="true"
+            app:backgroundTint="#FAF0E6"
+            app:tint="@color/black"
+            app:srcCompat="@drawable/baseline_arrow_back_24"/>
 
         <ImageView
             android:id="@+id/edit_cover"
@@ -20,14 +29,13 @@
             android:layout_height="200dp"
             android:layout_marginBottom="8dp"
             android:scaleType="centerCrop"
-            android:background="#DDDDDD" />
+            android:background="#DDDDDD"/>
 
         <Button
             android:id="@+id/change_image_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Change Cover Image" />
-
+            android:text="Change Cover Image"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -81,20 +89,21 @@
             android:id="@+id/edit_genre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="8dp"/>
 
         <Spinner
             android:id="@+id/edit_state"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="8dp"/>
 
         <Button
             android:id="@+id/save_book_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Save Changes" />
+            android:text="Save Changes"/>
+
     </LinearLayout>
 
 </ScrollView>

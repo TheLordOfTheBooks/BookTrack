@@ -3,25 +3,21 @@ package com.example.booktrack;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class forgotPass extends AppCompatActivity {
 
     private FirebaseAuth FBAuth;
     TextInputEditText emailInput;
+    FloatingActionButton arrow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +34,9 @@ public class forgotPass extends AppCompatActivity {
             return insets;
         });
 
+        FBAuth = FirebaseAuth.getInstance();
         emailInput = findViewById(R.id.email_forgot_pass);
+        arrow = findViewById(R.id.arrow);
         findViewById(R.id.change_pass_btn).setOnClickListener(v -> resetPassword(emailInput));
         findViewById(R.id.main).setBackgroundColor(Color.parseColor("#eed9c4"));
         findViewById(R.id.change_pass_btn).setBackgroundColor(Color.parseColor("#FAF0E6"));
@@ -46,7 +44,7 @@ public class forgotPass extends AppCompatActivity {
         findViewById(R.id.Forgot_pass_textView).setBackgroundColor(Color.TRANSPARENT);
         findViewById(R.id.Forgot_pass_textView).setForeground(null);
 
-        FBAuth = FirebaseAuth.getInstance();
+        arrow.setOnClickListener(v -> finish());
     }
 
     private void resetPassword(TextInputEditText emailInput) {

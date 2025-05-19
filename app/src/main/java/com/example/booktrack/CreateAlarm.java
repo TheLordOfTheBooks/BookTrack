@@ -1,46 +1,35 @@
 package com.example.booktrack;
 
-import static androidx.core.content.ContentProviderCompat.requireContext;
-
-import static java.security.AccessController.getContext;
-
 import android.Manifest;
-import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
-import android.widget.*;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.firebase.FirebaseApp;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -69,6 +58,7 @@ public class CreateAlarm extends AppCompatActivity {
     private boolean shouldScheduleAfterPermission = false;
     private String pendingBookName, pendingMessage, pendingAlarmId;
     private long pendingTriggerMillis;
+    FloatingActionButton arrow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +71,11 @@ public class CreateAlarm extends AppCompatActivity {
         setupListeners();
         createNotificationChannel();
         loadBooksFromFirestore();
+
+        arrow = findViewById(R.id.arrow);
+        arrow.setOnClickListener(v -> {
+            finish();
+        });
     }
 
     private void initViews() {
@@ -118,20 +113,18 @@ public class CreateAlarm extends AppCompatActivity {
     }
 
     private void requestBatteryOptimizationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-            if (!pm.isIgnoringBatteryOptimizations(getPackageName())) {
-                new AlertDialog.Builder(this)
-                        .setTitle("Allow Background Alarms")
-                        .setMessage("To ensure alarms work when the phone is idle, allow this app to ignore battery optimizations.")
-                        .setPositiveButton("Allow", (dialog, which) -> {
-                            Intent intent = new Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
-                            startActivity(intent);
-                        })
-                        .setNegativeButton("Cancel", null)
-                        .show();
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        if (!pm.isIgnoringBatteryOptimizations(getPackageName())) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Allow Background Alarms")
+                    .setMessage("To ensure alarms work when the phone is idle, allow this app to ignore battery optimizations.")
+                    .setPositiveButton("Allow", (dialog, which) -> {
+                        Intent intent = new Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
+                        startActivity(intent);
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
             }
-        }
     }
 
     private void showDatePicker() {

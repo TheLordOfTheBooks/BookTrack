@@ -14,6 +14,16 @@
         android:orientation="vertical"
         android:gravity="center">
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/arrow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:clickable="true"
+            app:backgroundTint="#FAF0E6"
+            app:tint="@color/black"
+            app:srcCompat="@drawable/baseline_arrow_back_24"/>
+
         <TextView
             android:text="Create a Goal"
             android:textSize="24sp"
@@ -22,19 +32,17 @@
             android:layout_height="wrap_content"
             android:textColor="#d9b99b"/>
 
-        <!-- Deadline from alarm -->
         <TextView
             android:id="@+id/goal_deadline"
             android:text="Deadline: "
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"/>
 
-        <!-- Goal Type Options -->
         <TextView
             android:text="What is your goal?"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"/>
 
         <RadioGroup
             android:id="@+id/goal_type_group"
@@ -57,8 +65,6 @@
                 android:layout_height="wrap_content" />
         </RadioGroup>
 
-
-
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -76,18 +82,17 @@
                 android:maxLines="1"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Change book state option -->
         <TextView
             android:text="Do you want to change the book's situation when the goal is done?"
             android:layout_marginTop="24dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"/>
 
         <Switch
             android:id="@+id/change_state_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="false" />
+            android:checked="false"/>
 
         <Spinner
             android:id="@+id/book_state_spinner"
@@ -96,13 +101,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp" />
 
-        <!-- Save Button -->
         <Button
             android:id="@+id/save_goal_button"
             android:text="Save Goal"
             android:layout_marginTop="24dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 

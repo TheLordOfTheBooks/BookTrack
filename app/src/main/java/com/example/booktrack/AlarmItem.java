@@ -8,7 +8,6 @@ public class AlarmItem {
     private long deadlineMillis;
     private String message;
 
-    // Required empty constructor for Firestore or Room
     public AlarmItem() {}
 
     public AlarmItem(String alarmId, String bookId, String bookName, String bookImageUrl, long deadlineMillis, String message) {
@@ -20,23 +19,47 @@ public class AlarmItem {
         this.message = message;
     }
 
-    public String getAlarmId() { return alarmId; }
-    public void setAlarmId(String alarmId) { this.alarmId = alarmId; }
+    public String getAlarmId() {
+        return alarmId;
+    }
+    public void setAlarmId(String alarmId) {
+        this.alarmId = alarmId;
+    }
 
-    public String getBookId() { return bookId; }
-    public void setBookId(String bookId) { this.bookId = bookId; }
+    public String getBookId() {
+        return bookId;
+    }
+    public void setBookId(String bookId) {
+        this.bookId = bookId;
+    }
 
-    public String getBookName() { return bookName; }
-    public void setBookName(String bookName) { this.bookName = bookName; }
+    public String getBookName() {
+        return bookName;
+    }
+    public void setBookName(String bookName) {
+        this.bookName = bookName;
+    }
 
-    public String getBookImageUrl() { return bookImageUrl; }
-    public void setBookImageUrl(String bookImageUrl) { this.bookImageUrl = bookImageUrl; }
+    public String getBookImageUrl() {
+        return bookImageUrl;
+    }
+    public void setBookImageUrl(String bookImageUrl) {
+        this.bookImageUrl = bookImageUrl;
+    }
 
-    public long getDeadlineMillis() { return deadlineMillis; }
-    public void setDeadlineMillis(long deadlineMillis) { this.deadlineMillis = deadlineMillis; }
+    public long getDeadlineMillis() {
+        return deadlineMillis;
+    }
+    public void setDeadlineMillis(long deadlineMillis) {
+        this.deadlineMillis = deadlineMillis;
+    }
 
-    public String getMessage() { return message; }
-    public void setMessage(String message) { this.message = message; }
+    public String getMessage() {
+        return message;
+    }
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
     public String toString() {
         return bookName;

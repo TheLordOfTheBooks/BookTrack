@@ -35,22 +35,24 @@
                 android:layout_height="wrap_content"
                 android:text="Book Title"
                 android:textStyle="bold"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
 
             <TextView
                 android:id="@+id/alarm_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Date: 01/01/2024"
-                android:textSize="14sp" />
+                android:textSize="14sp"/>
 
             <TextView
                 android:id="@+id/alarm_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Time: 09:00"
-                android:textSize="14sp" />
+                android:textSize="14sp"/>
+
         </LinearLayout>
+
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

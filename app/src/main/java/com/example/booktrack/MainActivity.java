@@ -12,14 +12,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
 
     private Button BookList_btn, TimeToRead_btn;
     private View main_view;
-    FloatingActionButton fab;
+    FloatingActionButton plus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,22 +30,21 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         BookList_btn = findViewById(R.id.book_list_button);
         TimeToRead_btn = findViewById(R.id.time_to_read_button);
         main_view = findViewById(R.id.main);
-        fab = findViewById(R.id.fab);
-        fab.setOnClickListener(v -> {
+        plus = findViewById(R.id.plus);
+
+        plus.setOnClickListener(v -> {
             startActivity(new Intent(this, AddMyBook.class));
         });
-
         BookList_btn.setOnClickListener(v -> {
             startActivity(new Intent(this, BookList.class));
         });
-
         TimeToRead_btn.setOnClickListener(v -> {
             startActivity(new Intent(this, TimeToRead.class));
         });
-
 
         BookList_btn.setBackgroundColor(Color.parseColor("#FAF0E6"));
         BookList_btn.setTextColor(Color.BLACK);

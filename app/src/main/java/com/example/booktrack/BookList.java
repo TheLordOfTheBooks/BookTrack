@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class BookList extends AppCompatActivity {
 
@@ -32,6 +33,7 @@ public class BookList extends AppCompatActivity {
     private RecyclerView recyclerView;
     private List<Book> bookList;
     private BookAdapter adapter;
+    FloatingActionButton arrow;
 
 
     @Override
@@ -81,13 +83,9 @@ public class BookList extends AppCompatActivity {
             return true;
         });
 
-        // Load default fragment
         bottomNav.setSelectedItemId(R.id.nav_read);
+        arrow = findViewById(R.id.arrow);
+        arrow.setOnClickListener(v -> finish());
     }
-
-
-
-
-
 
 }

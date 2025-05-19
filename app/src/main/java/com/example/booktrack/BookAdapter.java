@@ -1,54 +1,30 @@
 package com.example.booktrack;
 
-import android.os.Bundle;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.widget.Button;
 import android.widget.Toast;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.ArrayAdapter;
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.provider.MediaStore;
-import android.os.Build;
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.util.Log;
-import android.util.Log;
-import com.bumptech.glide.Glide;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import java.util.List;
-
-import androidx.core.app.ActivityCompat;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.core.app.ActivityCompat;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-import java.util.Arrays;
 
 
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder> {
@@ -209,9 +185,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
                     .show();
         });
 
-
-
-
         dialog.show();
     }
 
@@ -225,8 +198,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
             Glide.with(context).load(uri).into(imagePreview);
         }
     }
-
-
 
 }
 
