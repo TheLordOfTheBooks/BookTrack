@@ -21,6 +21,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -61,6 +63,8 @@ public class EditBook extends AppCompatActivity {
     private static final int REQUEST_PERMISSION = 200;
 
     private Uri imageUri;
+    private ActivityResultLauncher<Intent> pickImageLauncher;
+    private ActivityResultLauncher<Intent> takePhotoLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,6 +156,28 @@ public class EditBook extends AppCompatActivity {
         if (imageUrl != null && !imageUrl.isEmpty()) Glide.with(this).load(imageUrl).into(coverImage);
 
         saveButton.setOnClickListener(v -> saveUpdatedBook());
+
+        pickImageLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        imageUri = result.getData().getData();
+                        Glide.with(this).load(imageUri).into(coverImage);
+                    }
+                });
+
+        takePhotoLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        Bitmap photo = (Bitmap) result.getData().getExtras().get("data");
+                        if (photo != null) {
+                            String path = MediaStore.Images.Media.insertImage(getContentResolver(), photo, "title", null);
+                            imageUri = Uri.parse(path);
+                            Glide.with(this).load(imageUri).into(coverImage);
+                        }
+                    }
+                });
     }
 
     private void checkPermissions() {
@@ -178,36 +204,20 @@ public class EditBook extends AppCompatActivity {
         builder.setTitle("Select Book Cover");
         builder.setItems(options, (dialog, which) -> {
             if (which == 0) {
-                Intent pickIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                pickIntent.setType("image/*");
-                startActivityForResult(pickIntent, REQUEST_IMAGE_PICK);
+                Intent pickIntent = new Intent(Intent.ACTION_PICK);
+                pickIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                pickImageLauncher.launch(pickIntent);
             } else if (which == 1) {
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivityForResult(takePictureIntent, REQUEST_CAMERA);
+                    takePhotoLauncher.launch(takePictureIntent);
                 }
             }
         });
         builder.show();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_IMAGE_PICK && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
-            imageUri = data.getData();
-            Glide.with(this).load(imageUri).into(coverImage);
-        } else if (requestCode == REQUEST_CAMERA && resultCode == Activity.RESULT_OK && data != null) {
-            Bundle extras = data.getExtras();
-            if (extras != null) {
-                Bitmap photo = (Bitmap) extras.get("data");
-                String path = MediaStore.Images.Media.insertImage(getContentResolver(), photo, "title", null);
-                imageUri = Uri.parse(path);
-                Glide.with(this).load(imageUri).into(coverImage);
-            }
-        }
-    }
 
     private int getSpinnerIndex(Spinner spinner, String value) {
         for (int i = 0; i < spinner.getCount(); i++) {
@@ -263,7 +273,6 @@ public class EditBook extends AppCompatActivity {
         if (imageUri != null) {
             uploadImageAndUpdateBook(docRef, updatedBook);
         } else {
-            // Keep existing image or blank if none
             docRef.update(updatedBook)
                     .addOnSuccessListener(unused -> {
                         Toast.makeText(this, "Book updated!", Toast.LENGTH_SHORT).show();
