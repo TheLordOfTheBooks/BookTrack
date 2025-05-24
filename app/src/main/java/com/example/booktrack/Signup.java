@@ -8,6 +8,7 @@ import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -71,7 +72,18 @@ public class Signup extends AppCompatActivity {
             return;
         }
 
-
+        FBAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(Signup.this, "Registration successful!", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        String errorMsg = (task.getException() != null)
+                                ? task.getException().getMessage()
+                                : "Unknown error";
+                        Toast.makeText(Signup.this, "Registration failed: " + errorMsg, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
 

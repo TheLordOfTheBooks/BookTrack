@@ -198,6 +198,5 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
             Glide.with(context).load(uri).into(imagePreview);
         }
     }
-
 }
 
