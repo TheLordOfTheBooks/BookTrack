@@ -136,14 +136,21 @@ public class AddMyBook extends AppCompatActivity {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         Bitmap photo = (Bitmap) result.getData().getExtras().get("data");
                         if (photo != null) {
-                            String path = MediaStore.Images.Media.insertImage(getContentResolver(), photo, "title", null);
-                            imageUri = Uri.parse(path);
                             coverPreview.setVisibility(View.VISIBLE);
-                            Glide.with(this).load(imageUri).into(coverPreview);
+                            Glide.with(this).load(photo).into(coverPreview);
+
+                            // Save the bitmap for later upload (optional, if imageUri is required)
+                            this.imageUri = getImageUriFromBitmap(photo);  // see function below
                         }
                     }
                 });
     }
+
+    private Uri getImageUriFromBitmap(Bitmap bitmap) {
+        String path = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "CapturedImage", null);
+        return Uri.parse(path);
+    }
+
 
     private void checkPermissions() {
         if ((android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU &&
