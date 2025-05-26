@@ -1,31 +1,19 @@
 package com.example.booktrack;
 
-import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.provider.MediaStore;
-import android.util.Log;
-import android.widget.Toast;
-import android.content.Context;
-
-import java.util.List;
-import java.util.ArrayList;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
-import androidx.fragment.app.Fragment;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.List;
 
 public class BookList extends AppCompatActivity {
 
@@ -39,7 +27,7 @@ public class BookList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_book_list); // make sure this matches your layout file
+        setContentView(R.layout.activity_book_list);
 
 
 

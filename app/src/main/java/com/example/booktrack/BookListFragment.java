@@ -125,13 +125,4 @@ public class BookListFragment extends Fragment {
                     }
                 });
     }
-
-
-
-
-
-
-
-
-
 }
