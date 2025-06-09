@@ -2,6 +2,7 @@ package com.example.booktrack;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -141,6 +142,8 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.GoalViewHolder
         String imageUrl = goal.getBookImageUrl();
         holder.bookCover.setImageResource(R.drawable.ic_launcher_background);
         Log.d("GoalAdapter", "Image URL: " + goal.getBookImageUrl());
+        holder.bookCover.setBackgroundColor(Color.parseColor("#c3b091"));
+        Log.d("GoalAdapter", "Image URL: " + imageUrl);
         if (imageUrl != null && !imageUrl.isEmpty()) {
             Glide.with(context)
                     .load(imageUrl)
@@ -148,7 +151,8 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.GoalViewHolder
                     .error(R.drawable.ic_launcher_background)
                     .into(holder.bookCover);
         } else {
-            holder.bookCover.setImageResource(R.drawable.ic_launcher_background);
+            holder.bookCover.setImageDrawable(null);
+            holder.bookCover.setBackgroundColor(Color.parseColor("#c3b091"));
         }
 
         holder.doneButton.setOnClickListener(v -> {

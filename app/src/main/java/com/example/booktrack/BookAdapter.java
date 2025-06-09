@@ -3,6 +3,7 @@ package com.example.booktrack;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -116,10 +117,8 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
                     .error(android.R.color.white)
                     .into(holder.bookImage);
         } else {
-            holder.bookImage.setImageDrawable(null); // clear image
-            holder.bookImage.setBackgroundColor(
-                    holder.itemView.getResources().getColor(android.R.color.white)
-            );
+            holder.bookImage.setImageDrawable(null);
+            holder.bookImage.setBackgroundColor(Color.parseColor("#c3b091"));
         }
 
         // Set long click listener for showing book details dialog
@@ -218,7 +217,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
             Glide.with(context).load(book.getImageUrl()).into(imageView);
         } else {
             imageView.setImageDrawable(null);
-            imageView.setBackgroundColor(context.getResources().getColor(android.R.color.white));
+            imageView.setBackgroundColor(Color.parseColor("#eed9c4"));
         }
 
         AlertDialog dialog = builder.create();
